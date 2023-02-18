@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Slidesdown</title>
+    <link rel="stylesheet" href="/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="/reveal.js/plugin/chalkboard/style.css" />
+    <link rel="stylesheet" href="/reveal.js/plugin/customcontrols/style.css" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "chart": "/chart.js/dist/chart.umd.js",
+          "mermaid": "/mermaid/loader.js",
+          "marked": "/marked/loader.js",
+          "slidesmarkdown": "/slidesmarkdown.js"
+        }
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-6daed972.js"></script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-load-metadata
+          data-separator="^(#{1,2} |---$)"
+          data-separator-vertical="^(#{3} |\|\|\|$)"
+          data-separator-notes="^notes?:"
+          id="markdown"
+        ></section>
+      </div>
+    </div>
+
+    <script src="/chart.js/dist/chart.umd.js"></script>
+    <script src="/reveal.js/dist/reveal.js"></script>
+    <script src="/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="/reveal.js/plugin/math/math.js"></script>
+    <script src="/reveal.js/plugin/notes/notes.js"></script>
+    <script src="/reveal.js/plugin/search/search.js"></script>
+    <script src="/reveal.js/plugin/zoom/zoom.js"></script>
+    <script src="/reveal.js/plugin/pdfexport/pdfexport.js"></script>
+    <script src="/reveal.js/plugin/chalkboard/plugin.js"></script>
+    <script src="/reveal.js/plugin/customcontrols/plugin.js"></script>
+    <script src="/reveal.js/plugin/chart/plugin.js"></script>
+    
+    <script type="module" src="/init.js"></script>
+    <!-- DOCKER_LOADER_LINE -->
+    <!-- <script -->
+    <!--   async -->
+    <!--   src="https://www.googletagmanager.com/gtag/js?id=G-5277P6Q3RP" -->
+    <!-- ></script> -->
+    <!-- <script> -->
+    <!--   window.dataLayer = window.dataLayer || [] -->
+    <!--   function gtag() { -->
+    <!--     dataLayer.push(arguments) -->
+    <!--   } -->
+    <!--   gtag("js", new Date()) -->
+    <!--   gtag("config", "G-5277P6Q3RP") -->
+    <!-- </script> -->
+  </body>
+</html>

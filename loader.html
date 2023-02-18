@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" type="application/svg+xml" href="/favicon.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="canonical" href="https://slidesdown.e-jc.de/loader.html" />
+    <!-- <link -->
+    <!--   rel="stylesheet" -->
+    <!--   href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" -->
+    <!-- /> -->
+    <link rel="stylesheet" href="/css/pico.min.css" />
+    <!-- TODO: replace search icon  -->
+    <!-- <link rel="stylesheet" href="/custom.css" /> -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Slidesdown Loader</title>
+  </head>
+  <body>
+    <header class="container">
+      <hgroup>
+        <h1>
+          <i
+            style="
+              background-color: var(--color);
+              mask-image: url(/logo.svg);
+              height: 0.8em;
+              width: 1em;
+              display: inline-block;
+            "
+          ></i>
+          Slidesdown Loader
+        </h1>
+        <h2>Slideshows as fast as you can type.</h2>
+      </hgroup>
+      <nav class="container" style="align-items: center">
+        <ul>
+          <li><u>Open</u></li>
+          <li><a href="/learn.html">Learn</a></li>
+        </ul>
+        <ul>
+          <li>
+            <a
+              data-theme-switcher
+              class="contrast"
+              href="#"
+              title="Switch Theme"
+              style="
+                height: 1.5rem;
+                width: 1.5rem;
+                margin-right: 0.5rem;
+                background-color: var(--color);
+                mask-image: var(--icon-theme);
+              "
+            ></a>
+          </li>
+          <li>
+            <a
+              title="GitHub"
+              class="contrast"
+              href="https://github.com/jceb/slidesdown"
+              style="
+                height: 1.5rem;
+                width: 1.5rem;
+                background-color: var(--color);
+                mask-image: url('/icons/github.svg');
+              "
+            ></a>
+          </li>
+        </ul>
+      </nav>
+      <main class="container">
+        <h1>Open your Slideshow</h1>
+        <form action="/" method="get">
+          <label class="label" for="slides"
+            >Slideshow URL, e.g.
+            <a href="/?slides=github.com/jceb/slidesdown"
+              >github.com/jceb/slidesdown</a
+            >
+            <input
+              id="slides"
+              type="search"
+              class="input"
+              type="text"
+              name="slides"
+              placeholder="github.com/jceb/slidesdown"
+            />
+          </label>
+          <button type="submit">Open</button>
+        </form>
+      </main>
+    </header>
+    <!-- <s  lript -->
+    <!--   src="https://kit.fontawesome.com/fec85b2437.js" -->
+    <!--   crossorigin="anonymous" -->
+    <!-- ></script> -->
+    <script src="/js/minimal-theme-switcher.js"></script>
+    <!-- <script -->
+    <!--   async -->
+    <!--   src="https://www.googletagmanager.com/gtag/js?id=G-5277P6Q3RP" -->
+    <!-- ></script> -->
+    <!-- <script> -->
+    <!--   window.dataLayer = window.dataLayer || [] -->
+    <!--   function gtag() { -->
+    <!--     dataLayer.push(arguments) -->
+    <!--   } -->
+    <!--   gtag("js", new Date()) -->
+    <!--   gtag("config", "G-5277P6Q3RP") -->
+    <!-- </script> -->
+  </body>
+</html>
