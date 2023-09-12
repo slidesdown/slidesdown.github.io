@@ -19,7 +19,7 @@ Copy the file `plugin.js` and the  `img` directory into the plugin folder of you
 
 ```html
 <script src="plugin/chalkboard/plugin.js"></script>
-<script src="plugin/chalkboard/customcontrols.js"></script>
+<script src="plugin/customcontrols/plugin.js"></script>
 
 <script>
     Reveal.initialize({
@@ -40,7 +40,7 @@ has to be included to the `head` section of you HTML-file.
 
 In order to include buttons for opening and closing the notes canvas or the chalkboard you should make sure that `font-awesome` is available. The easiest way is to include
 ```
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css">
 ```
 to the ```head``` section of you HTML-file.
 
@@ -157,4 +157,4 @@ Reveal.initialize({
 
 MIT licensed
 
-Copyright (C) 2021 Asvin Goel
+Copyright (C) 2022 Asvin Goel

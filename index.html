@@ -27,7 +27,8 @@
         "imports": {
           "chart": "/vendor/chart.js/dist/chart.umd.js",
           "mermaid": "/vendor/mermaid/loader.js",
-          "marked": "/vendor/marked/loader.js",
+          "marked": "/vendor/marked/marked.esm.js",
+          "marked-base-url": "/vendor/marked-base-url/index.js",
           "slidesdown": "/plugin/slidesdown.js",
           "revealjs": "/vendor/reveal.js/dist/reveal.esm.js",
           "reveal-highlight": "/vendor/reveal.js/plugin/highlight/highlight.esm.js",
@@ -42,7 +43,7 @@
         }
       }
     </script>
-    <script type="module" crossorigin src="/assets/index-d4b8acda.js"></script>
+    <script type="module" crossorigin src="/assets/index-bbb7c898.js"></script>
   </head>
   <body>
     <div class="reveal">
@@ -57,18 +58,16 @@
       </div>
 
       <!-- Layout components -->
-      <div>
-        <div id="slide-header">
-          <div id="slide-header1"></div>
-          <div id="slide-header2"></div>
-          <div id="slide-header2"></div>
-        </div>
-        <div id="slide-footer">
-          <div id="slide-footer1"></div>
-          <div id="slide-footer2"></div>
-          <div id="slide-footer2"></div>
-        </div>
-      </div>
+      <header id="slide-header">
+        <div id="slide-header-1"></div>
+        <div id="slide-header-2"></div>
+        <div id="slide-header-3"></div>
+      </header>
+      <footer id="slide-footer">
+        <div id="slide-footer-1"></div>
+        <div id="slide-footer-2"></div>
+        <div id="slide-footer-3"></div>
+      </footer>
     </div>
 
     <!-- INFO: support for non-esm plugins -->
