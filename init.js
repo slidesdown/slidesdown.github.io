@@ -6,6 +6,8 @@ import RevealMath from "reveal-math";
 import RevealNotes from "reveal-notes";
 import RevealSearch from "reveal-search";
 import RevealZoom from "reveal-zoom";
+import RevealApexchart from "reveal-apexchart";
+import RevealMermaid from "reveal-mermaid";
 // INFO: non-esm therefore they can't be properly imported:
 // import * as PdfExport from "reveal-pdfexport";
 // import * as RevealChalkboard from "reveal-chalkboard";
@@ -118,6 +120,8 @@ const main = (defaults) => {
       RevealChart,
       // Source: https://github.com/rajgoel/reveal.js-plugins/tree/master/anything
       // RevealAnything,
+      RevealApexchart,
+      RevealMermaid,
     ],
     customcontrols: {
       controls: [
