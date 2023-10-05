@@ -28,7 +28,7 @@ var Kt=Object.defineProperty;var Ft=(n,t,e)=>t in n?Kt(n,t,{enumerable:!0,config
             align-items: center;
             justify-content: space-around;
           }
-        `);customElements.define("flex-box",at);class fe extends _{render(){return A`<flex-box styles="flex-direction: column; ${this.styles}"><slot></slot></grid-box>`}}customElements.define("v-box",fe);class me extends _{render(){return A`<flex-box styles="flex-direction: row;"><slot></slot></grid-box>`}}customElements.define("h-box",me);class dt extends _{constructor(){super()}render(){return A`<div class="grid" style="${this.styles}"><slot></slot></div>`}}y(dt,"properties",{styles:""}),y(dt,"styles",Mt`
+        `);customElements.define("flex-box",at);class fe extends _{render(){return A`<flex-box styles="flex-direction: column; ${this.styles}"><slot></slot></grid-box>`}}customElements.define("v-box",fe);class me extends _{render(){return A`<flex-box styles="flex-direction: row; ${this.styles}"><slot></slot></grid-box>`}}customElements.define("h-box",me);class dt extends _{constructor(){super()}render(){return A`<div class="grid" style="${this.styles}"><slot></slot></div>`}}y(dt,"properties",{styles:""}),y(dt,"styles",Mt`
           .grid {
             display: grid;
             align-items: center;
