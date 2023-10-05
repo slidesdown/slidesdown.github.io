@@ -1,10 +1,8 @@
-export function parseDirective(statement: any, context: any, type: any): void;
 declare namespace _default {
     export { RequirementType };
     export { RiskLevel };
     export { VerifyType };
     export { Relationships };
-    export { parseDirective };
     export function getConfig(): any;
     export { addRequirement };
     export { getRequirements };
@@ -59,10 +57,10 @@ declare function setNewReqId(id: any): void;
 declare function setNewReqText(text: any): void;
 declare function setNewReqRisk(risk: any): void;
 declare function setNewReqVerifyMethod(verifyMethod: any): void;
-import { setAccTitle } from '../../commonDb.js';
-import { getAccTitle } from '../../commonDb.js';
-import { setAccDescription } from '../../commonDb.js';
-import { getAccDescription } from '../../commonDb.js';
+import { setAccTitle } from '../common/commonDb.js';
+import { getAccTitle } from '../common/commonDb.js';
+import { setAccDescription } from '../common/commonDb.js';
+import { getAccDescription } from '../common/commonDb.js';
 declare function addElement(name: any): any;
 declare function getElements(): {};
 declare function setNewElementType(type: any): void;

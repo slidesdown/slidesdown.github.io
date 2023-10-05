@@ -1,7 +1,6 @@
 export declare const mermaidAPI: {
     render: import("@vitest/spy").Mock<any, any>;
     parse: (text: string, parseOptions?: import("../mermaidAPI.js").ParseOptions | undefined) => Promise<boolean>;
-    parseDirective: import("@vitest/spy").Mock<any, any>;
     initialize: import("@vitest/spy").Mock<any, any>;
     getConfig: () => import("../config.type.js").MermaidConfig;
     setConfig: (conf: import("../config.type.js").MermaidConfig) => import("../config.type.js").MermaidConfig;

@@ -1,20 +1,19 @@
 import type { ClassRelation, ClassNode, ClassNote, ClassMap, NamespaceMap, NamespaceNode } from './classTypes.js';
-export declare const parseDirective: (statement: string, context: string, type: string) => void;
-export declare const setClassLabel: (id: string, label: string) => void;
+export declare const setClassLabel: (_id: string, label: string) => void;
 /**
  * Function called by parser when a node definition has been found.
  *
  * @param id - Id of the class to add
  * @public
  */
-export declare const addClass: (id: string) => void;
+export declare const addClass: (_id: string) => void;
 /**
  * Function to lookup domId from id in the graph definition.
  *
  * @param id - class ID to lookup
  * @public
  */
-export declare const lookUpDomId: (id: string) => string;
+export declare const lookUpDomId: (_id: string) => string;
 export declare const clear: () => void;
 export declare const getClass: (id: string) => ClassNode;
 export declare const getClasses: () => ClassMap;
@@ -95,13 +94,12 @@ export declare const addNamespace: (id: string) => void;
  */
 export declare const addClassesToNamespace: (id: string, classNames: string[]) => void;
 declare const _default: {
-    parseDirective: (statement: string, context: string, type: string) => void;
     setAccTitle: (txt: string) => void;
     getAccTitle: () => string;
     getAccDescription: () => string;
     setAccDescription: (txt: string) => void;
     getConfig: () => import("../../config.type.js").ClassDiagramConfig | undefined;
-    addClass: (id: string) => void;
+    addClass: (_id: string) => void;
     bindFunctions: (element: Element) => void;
     clear: () => void;
     getClass: (id: string) => ClassNode;
@@ -132,10 +130,10 @@ declare const _default: {
     setLink: (ids: string, linkStr: string, target: string) => void;
     getTooltip: (id: string, namespace?: string | undefined) => string | undefined;
     setTooltip: (ids: string, tooltip?: string | undefined) => void;
-    lookUpDomId: (id: string) => string;
+    lookUpDomId: (_id: string) => string;
     setDiagramTitle: (txt: string) => void;
     getDiagramTitle: () => string;
-    setClassLabel: (id: string, label: string) => void;
+    setClassLabel: (_id: string, label: string) => void;
     addNamespace: (id: string) => void;
     addClassesToNamespace: (id: string, classNames: string[]) => void;
     getNamespace: (name: string) => NamespaceNode;

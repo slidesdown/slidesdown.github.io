@@ -1,4 +1,3 @@
-export function parseDirective(statement: any, context: any, type: any): void;
 export function lookUpDomId(id: any): any;
 export function addVertex(_id: any, textObj: any, type: any, style: any, classes: any, dir: any, props?: {}): void;
 export function addSingleLink(_start: any, _end: any, type: any): void;
@@ -32,7 +31,6 @@ export namespace lex {
     export { firstGraph };
 }
 declare namespace _default {
-    export { parseDirective };
     export function defaultConfig(): import("../../config.type.js").FlowchartDiagramConfig | undefined;
     export { setAccTitle };
     export { getAccTitle };
@@ -70,10 +68,10 @@ declare namespace _default {
     export { getDiagramTitle };
 }
 export default _default;
-import { setAccTitle } from '../../commonDb.js';
-import { getAccTitle } from '../../commonDb.js';
-import { getAccDescription } from '../../commonDb.js';
-import { setAccDescription } from '../../commonDb.js';
+import { setAccTitle } from '../common/commonDb.js';
+import { getAccTitle } from '../common/commonDb.js';
+import { getAccDescription } from '../common/commonDb.js';
+import { setAccDescription } from '../common/commonDb.js';
 declare function setTooltip(ids: any, tooltip: any): void;
 declare function exists(allSgs: any, _id: any): boolean;
 /**
@@ -85,5 +83,5 @@ declare function exists(allSgs: any, _id: any): boolean;
 declare function makeUniq(sg: any, allSubgraphs: any): {
     nodes: any[];
 };
-import { setDiagramTitle } from '../../commonDb.js';
-import { getDiagramTitle } from '../../commonDb.js';
+import { setDiagramTitle } from '../common/commonDb.js';
+import { getDiagramTitle } from '../common/commonDb.js';

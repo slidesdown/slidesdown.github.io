@@ -3,8 +3,8 @@ export interface ClassNode {
     type: string;
     label: string;
     cssClasses: string[];
-    methods: string[];
-    members: string[];
+    methods: ClassMember[];
+    members: ClassMember[];
     annotations: string[];
     domId: string;
     parent?: string;
@@ -13,27 +13,44 @@ export interface ClassNode {
     haveCallback?: boolean;
     tooltip?: string;
 }
+export type Visibility = '#' | '+' | '~' | '-' | '';
+export declare const visibilityValues: string[];
+/**
+ * Parses and stores class diagram member variables/methods.
+ *
+ */
+export declare class ClassMember {
+    id: string;
+    cssStyle: string;
+    memberType: 'method' | 'attribute';
+    visibility: Visibility;
+    /**
+     * denote if static or to determine which css class to apply to the node
+     * @defaultValue ''
+     */
+    classifier: string;
+    /**
+     * parameters for method
+     * @defaultValue ''
+     */
+    parameters: string;
+    /**
+     * return type for method
+     * @defaultValue ''
+     */
+    returnType: string;
+    constructor(input: string, memberType: 'method' | 'attribute');
+    getDisplayDetails(): {
+        displayText: string;
+        cssStyle: string;
+    };
+    parseMember(input: string): void;
+    parseClassifier(): "" | "font-style:italic;" | "text-decoration:underline;";
+}
 export interface ClassNote {
     id: string;
     class: string;
     text: string;
-}
-export interface EdgeData {
-    arrowheadStyle?: string;
-    labelpos?: string;
-    labelType?: string;
-    label?: string;
-    classes: string;
-    pattern: string;
-    id: string;
-    arrowhead: string;
-    startLabelRight: string;
-    endLabelLeft: string;
-    arrowTypeStart: string;
-    arrowTypeEnd: string;
-    style: string;
-    labelStyle: string;
-    curve: any;
 }
 export type ClassRelation = {
     id1: string;

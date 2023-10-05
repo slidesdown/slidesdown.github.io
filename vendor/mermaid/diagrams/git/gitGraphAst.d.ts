@@ -1,4 +1,3 @@
-export function parseDirective(statement: any, context: any, type: any): void;
 export function setDirection(dir: any): void;
 export function setOptions(rawOptString: any): void;
 export function getOptions(): {};
@@ -26,7 +25,6 @@ export namespace commitType {
     let CHERRY_PICK: number;
 }
 declare namespace _default {
-    export { parseDirective };
     export function getConfig(): import("../../config.type.js").GitGraphDiagramConfig | undefined;
     export { setDirection };
     export { setOptions };
@@ -55,9 +53,9 @@ declare namespace _default {
 }
 export default _default;
 declare let branches: typeof branches;
-import { setAccTitle } from '../../commonDb.js';
-import { getAccTitle } from '../../commonDb.js';
-import { getAccDescription } from '../../commonDb.js';
-import { setAccDescription } from '../../commonDb.js';
-import { setDiagramTitle } from '../../commonDb.js';
-import { getDiagramTitle } from '../../commonDb.js';
+import { setAccTitle } from '../common/commonDb.js';
+import { getAccTitle } from '../common/commonDb.js';
+import { getAccDescription } from '../common/commonDb.js';
+import { setAccDescription } from '../common/commonDb.js';
+import { setDiagramTitle } from '../common/commonDb.js';
+import { getDiagramTitle } from '../common/commonDb.js';

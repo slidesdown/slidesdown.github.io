@@ -1,6 +1,5 @@
 export function getC4Type(): any;
 export function setC4Type(c4TypeParam: any): void;
-export function parseDirective(statement: any, context: any, type: any): void;
 export function addRel(type: any, from: any, to: any, label: any, techn: any, descr: any, sprite: any, tags: any, link: any): void;
 export function addPersonOrSystem(typeC4Shape: any, alias: any, label: any, descr: any, sprite: any, tags: any, link: any): void;
 export function addContainer(typeC4Shape: any, alias: any, label: any, techn: any, descr: any, sprite: any, tags: any, link: any): void;
@@ -100,7 +99,6 @@ declare namespace _default {
     export { getAccTitle };
     export { getAccDescription };
     export { setAccDescription };
-    export { parseDirective };
     export function getConfig(): import("../../config.type.js").C4DiagramConfig | undefined;
     export { clear };
     export { LINETYPE };
@@ -110,7 +108,7 @@ declare namespace _default {
     export { setC4Type };
 }
 export default _default;
-import { setAccTitle } from '../../commonDb.js';
-import { getAccTitle } from '../../commonDb.js';
-import { getAccDescription } from '../../commonDb.js';
-import { setAccDescription } from '../../commonDb.js';
+import { setAccTitle } from '../common/commonDb.js';
+import { getAccTitle } from '../common/commonDb.js';
+import { getAccDescription } from '../common/commonDb.js';
+import { setAccDescription } from '../common/commonDb.js';

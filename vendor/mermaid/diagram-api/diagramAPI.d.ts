@@ -1,5 +1,5 @@
 import type { DiagramDefinition, DiagramDetector } from './types.js';
-import * as _commonDb from '../commonDb.js';
+import * as _commonDb from '../diagrams/common/commonDb.js';
 export declare const log: Record<import("../logger.js").LogLevel, {
     (...data: any[]): void;
     (message?: any, ...optionalParams: any[]): void;
@@ -9,7 +9,6 @@ export declare const getConfig: () => import("../config.type.js").MermaidConfig;
 export declare const sanitizeText: (text: string) => string;
 export declare const setupGraphViewbox: (graph: any, svgElem: any, padding: any, useMaxWidth: any) => void;
 export declare const getCommonDb: () => typeof _commonDb;
-export declare const parseDirective: (p: any, statement: string, context: string, type: string) => void;
 export interface Detectors {
     [key: string]: DiagramDetector;
 }

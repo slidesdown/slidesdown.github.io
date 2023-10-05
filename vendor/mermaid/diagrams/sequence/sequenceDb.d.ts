@@ -1,11 +1,10 @@
-export function parseDirective(statement: any, context: any, type: any): void;
 export function addBox(data: any): void;
 export function addActor(id: any, name: any, description: any, type: any): void;
 export function addMessage(idFrom: any, idTo: any, message: any, answer: any): void;
 export function addSignal(idFrom: any, idTo: any, message: {
     text: undefined;
     wrap: undefined;
-} | undefined, messageType: any): boolean;
+} | undefined, messageType: any, activate?: boolean): boolean;
 export function hasAtLeastOneBox(): boolean;
 export function hasAtLeastOneBoxWithTitle(): boolean;
 export function getMessages(): any[];
@@ -77,7 +76,7 @@ export function addALink(actorId: any, text: any): void;
 export function addProperties(actorId: any, text: any): void;
 export function addDetails(actorId: any, text: any): void;
 export function getActorProperty(actor: any, key: any): any;
-export function apply(param: any): void;
+export function apply(param: object | object[] | AddMessageParams): void;
 declare namespace _default {
     export { addActor };
     export { addMessage };
@@ -101,7 +100,6 @@ declare namespace _default {
     export { getBoxes };
     export { getDiagramTitle };
     export { setDiagramTitle };
-    export { parseDirective };
     export function getConfig(): import("../../config.type.js").SequenceDiagramConfig | undefined;
     export { clear };
     export { parseMessage };
@@ -118,9 +116,38 @@ declare namespace _default {
     export { hasAtLeastOneBoxWithTitle };
 }
 export default _default;
-import { getAccTitle } from '../../commonDb.js';
-import { getDiagramTitle } from '../../commonDb.js';
-import { setDiagramTitle } from '../../commonDb.js';
-import { setAccTitle } from '../../commonDb.js';
-import { setAccDescription } from '../../commonDb.js';
-import { getAccDescription } from '../../commonDb.js';
+/**
+ * A message from one actor to another.
+ */
+export type AddMessageParams = {
+    /**
+     * - The id of the actor sending the message.
+     */
+    from: string;
+    /**
+     * - The id of the actor receiving the message.
+     */
+    to: string;
+    /**
+     * - The message text.
+     */
+    msg: string;
+    /**
+     * - The type of signal.
+     */
+    signalType: number;
+    /**
+     * - Set to `"addMessage"` if this is an `AddMessageParams`.
+     */
+    type: "addMessage";
+    /**
+     * - If `true`, this signal starts an activation.
+     */
+    activate?: boolean | undefined;
+};
+import { getAccTitle } from '../common/commonDb.js';
+import { getDiagramTitle } from '../common/commonDb.js';
+import { setDiagramTitle } from '../common/commonDb.js';
+import { setAccTitle } from '../common/commonDb.js';
+import { setAccDescription } from '../common/commonDb.js';
+import { getAccDescription } from '../common/commonDb.js';

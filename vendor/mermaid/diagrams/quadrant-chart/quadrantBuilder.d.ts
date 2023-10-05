@@ -1,10 +1,7 @@
 import type { BaseDiagramConfig, QuadrantChartConfig } from '../../config.type.js';
+import type { Point } from '../../types.js';
 export type TextVerticalPos = 'left' | 'center' | 'right';
 export type TextHorizontalPos = 'top' | 'middle' | 'bottom';
-export interface Point {
-    x: number;
-    y: number;
-}
 export interface QuadrantPointInputType extends Point {
     text: string;
 }

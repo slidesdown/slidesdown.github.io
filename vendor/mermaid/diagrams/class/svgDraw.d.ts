@@ -16,15 +16,10 @@ export function drawNote(elem: SVGSVGElement, note: {
     width: number;
     height: number;
 };
-export function parseMember(text: any): {
-    displayText: string;
-    cssStyle: string;
-};
 declare namespace _default {
     export { getClassTitleString };
     export { drawClass };
     export { drawEdge };
     export { drawNote };
-    export { parseMember };
 }
 export default _default;

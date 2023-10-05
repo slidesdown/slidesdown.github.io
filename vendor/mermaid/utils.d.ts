@@ -1,5 +1,7 @@
 import type { CurveFactory } from 'd3';
 import type { MermaidConfig } from './config.type.js';
+import type { D3Element } from './mermaidAPI.js';
+import type { Point, TextDimensionConfig, TextDimensions } from './types.js';
 export declare const ZERO_WIDTH_SPACE = "\u200B";
 /**
  * Detects the init config object from the text
@@ -36,6 +38,10 @@ export declare const ZERO_WIDTH_SPACE = "\u200B";
  * @returns The json object representing the init passed to mermaid.initialize()
  */
 export declare const detectInit: (text: string, config?: MermaidConfig) => MermaidConfig | undefined;
+interface Directive {
+    type?: string;
+    args?: unknown;
+}
 /**
  * Detects the directive from the text.
  *
@@ -59,13 +65,8 @@ export declare const detectInit: (text: string, config?: MermaidConfig) => Merma
  * @returns An object or Array representing the directive(s) matched by the input type.
  * If a single directive was found, that directive object will be returned.
  */
-export declare const detectDirective: (text: string, type?: string | RegExp) => {
-    type?: string | undefined;
-    args?: any;
-} | {
-    type?: string | undefined;
-    args?: any;
-}[];
+export declare const detectDirective: (text: string, type?: string | RegExp | null) => Directive | Directive[];
+export declare const removeDirectives: (text: string) => string;
 /**
  * Detects whether a substring in present in a given array
  *
@@ -96,18 +97,13 @@ export declare function formatUrl(linkStr: string, config: MermaidConfig): strin
  * @param functionName - A dot separated path to the function relative to the `window`
  * @param params - Parameters to pass to the function
  */
-export declare const runFunc: (functionName: string, ...params: any[]) => void;
-/** A (x, y) point */
-interface Point {
-    /** The x value */
-    x: number;
-    /** The y value */
-    y: number;
-}
+export declare const runFunc: (functionName: string, ...params: unknown[]) => void;
 /**
  * {@inheritdoc traverseEdge}
  */
 declare function calcLabelPosition(points: Point[]): Point;
+export declare const roundNumber: (num: number, precision?: number) => number;
+export declare const calculatePoint: (points: Point[], distanceToTraverse: number) => Point;
 /**
  * Calculates the terminal label position.
  *
@@ -128,7 +124,9 @@ export declare function getStylesFromArray(arr: string[]): {
     labelStyle: string;
 };
 export declare const generateId: () => string;
-export declare const random: (options: any) => string;
+export declare const random: (options: {
+    length: number;
+}) => string;
 export declare const getTextObj: () => {
     x: number;
     y: number;
@@ -141,6 +139,7 @@ export declare const getTextObj: () => {
     rx: number;
     ry: number;
     valign: undefined;
+    text: string;
 };
 /**
  * Adds text to an element
@@ -167,7 +166,7 @@ interface WrapLabelConfig {
     fontWeight: number;
     joinWith: string;
 }
-export declare const wrapLabel: (label: string, maxWidth: string, config: WrapLabelConfig) => string;
+export declare const wrapLabel: (label: string, maxWidth: number, config: WrapLabelConfig) => string;
 /**
  * This calculates the text's height, taking into account the wrap breaks and both the statically
  * configured height, width, and the length of the text (in pixels).
@@ -189,16 +188,6 @@ export declare function calculateTextHeight(text: Parameters<typeof calculateTex
  * @returns The width for the given text
  */
 export declare function calculateTextWidth(text: Parameters<typeof calculateTextDimensions>[0], config: Parameters<typeof calculateTextDimensions>[1]): ReturnType<typeof calculateTextDimensions>['width'];
-interface TextDimensionConfig {
-    fontSize?: number;
-    fontWeight?: number;
-    fontFamily?: string;
-}
-interface TextDimensions {
-    width: number;
-    height: number;
-    lineHeight?: number;
-}
 /**
  * This calculates the dimensions of the given text, font size, font family, font weight, and
  * margins.
@@ -209,11 +198,11 @@ interface TextDimensions {
  * @returns The dimensions for the given text
  */
 export declare const calculateTextDimensions: (text: string, config: TextDimensionConfig) => TextDimensions;
-export declare const initIdGenerator: {
-    new (deterministic: any, seed?: any): {
-        next(): number;
-    };
-};
+export declare class InitIDGenerator {
+    private count;
+    next: () => number;
+    constructor(deterministic?: boolean, seed?: string);
+}
 /**
  * Decodes HTML, source: {@link https://github.com/shrpne/entity-decode/blob/v2.0.1/browser.js}
  *
@@ -221,13 +210,6 @@ export declare const initIdGenerator: {
  * @returns Unescaped HTML
  */
 export declare const entityDecode: (html: string) => string;
-/**
- * Sanitizes directive objects
- *
- * @param args - Directive's JSON
- */
-export declare const sanitizeDirective: (args: unknown) => void;
-export declare const sanitizeCss: (str: string) => string;
 export interface DetailedError {
     str: string;
     hash: any;
@@ -235,7 +217,7 @@ export interface DetailedError {
     message?: string;
 }
 /** @param error - The error to check */
-export declare function isDetailedError(error: unknown): error is DetailedError;
+export declare function isDetailedError(error: any): error is DetailedError;
 /** @param error - The error to convert to an error message */
 export declare function getErrorMessage(error: unknown): string;
 /**
@@ -246,7 +228,7 @@ export declare function getErrorMessage(error: unknown): string;
  * @param titleTopMargin - Margin in pixels between title and rest of the graph
  * @param title - The title. If empty, returns immediately.
  */
-export declare const insertTitle: (parent: any, cssClass: string, titleTopMargin: number, title?: string) => void;
+export declare const insertTitle: (parent: D3Element, cssClass: string, titleTopMargin: number, title?: string) => void;
 /**
  * Parses a raw fontSize configuration value into a number and string value.
  *
@@ -262,23 +244,17 @@ declare const _default: {
         depth?: number | undefined;
         clobber?: boolean | undefined;
     }) => any;
-    wrapLabel: (label: string, maxWidth: string, config: WrapLabelConfig) => string;
+    wrapLabel: (label: string, maxWidth: number, config: WrapLabelConfig) => string;
     calculateTextHeight: typeof calculateTextHeight;
     calculateTextWidth: typeof calculateTextWidth;
     calculateTextDimensions: (text: string, config: TextDimensionConfig) => TextDimensions;
     cleanAndMerge: typeof cleanAndMerge;
     detectInit: (text: string, config?: MermaidConfig | undefined) => MermaidConfig | undefined;
-    detectDirective: (text: string, type?: string | RegExp) => {
-        type?: string | undefined;
-        args?: any;
-    } | {
-        type?: string | undefined;
-        args?: any;
-    }[];
+    detectDirective: (text: string, type?: string | RegExp | null) => Directive | Directive[];
     isSubstringInArray: (str: string, arr: string[]) => number;
     interpolateToCurve: typeof interpolateToCurve;
     calcLabelPosition: typeof calcLabelPosition;
-    calcCardinalityPosition: (isRelationTypePresent: any, points: any, initialPosition: any) => {
+    calcCardinalityPosition: (isRelationTypePresent: boolean, points: Point[], initialPosition: Point) => {
         x: number;
         y: number;
     };
@@ -286,17 +262,13 @@ declare const _default: {
     formatUrl: typeof formatUrl;
     getStylesFromArray: typeof getStylesFromArray;
     generateId: () => string;
-    random: (options: any) => string;
-    runFunc: (functionName: string, ...params: any[]) => void;
+    random: (options: {
+        length: number;
+    }) => string;
+    runFunc: (functionName: string, ...params: unknown[]) => void;
     entityDecode: (html: string) => string;
-    initIdGenerator: {
-        new (deterministic: any, seed?: any): {
-            next(): number;
-        };
-    };
-    sanitizeDirective: (args: unknown) => void;
-    sanitizeCss: (str: string) => string;
     insertTitle: (parent: any, cssClass: string, titleTopMargin: number, title?: string | undefined) => void;
     parseFontSize: (fontSize: string | number | undefined) => [(number | undefined)?, (string | undefined)?];
+    InitIDGenerator: typeof InitIDGenerator;
 };
 export default _default;

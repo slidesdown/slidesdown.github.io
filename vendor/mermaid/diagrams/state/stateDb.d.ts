@@ -15,7 +15,6 @@ export namespace relationType {
     let COMPOSITION: number;
     let DEPENDENCY: number;
 }
-export function parseDirective(statement: any, context: any, type: any): void;
 export function addState(id: null | string, type?: null | string, doc?: null | string, descr?: null | string | string[], note?: null | string, classes?: null | string | string[], styles?: null | string | string[], textStyles?: null | string | string[]): void;
 export function clear(saveCommon: any): void;
 export function getState(id: any): any;
@@ -31,7 +30,6 @@ export function setCssClass(itemIds: string | string[], cssClassName: string): v
 export function setStyle(itemId: any, styleText: any): void;
 export function setTextStyle(itemId: any, cssClassName: any): void;
 declare namespace _default {
-    export { parseDirective };
     export function getConfig(): import("../../config.type.js").StateDiagramConfig | undefined;
     export { addState };
     export { clear };
@@ -85,9 +83,9 @@ declare function getRootDocV2(): {
  */
 declare function extract(_doc: any): void;
 declare function trimColon(str: any): any;
-import { getAccTitle } from '../../commonDb.js';
-import { setAccTitle } from '../../commonDb.js';
-import { getAccDescription } from '../../commonDb.js';
-import { setAccDescription } from '../../commonDb.js';
-import { setDiagramTitle } from '../../commonDb.js';
-import { getDiagramTitle } from '../../commonDb.js';
+import { getAccTitle } from '../common/commonDb.js';
+import { setAccTitle } from '../common/commonDb.js';
+import { getAccDescription } from '../common/commonDb.js';
+import { setAccDescription } from '../common/commonDb.js';
+import { setDiagramTitle } from '../common/commonDb.js';
+import { getDiagramTitle } from '../common/commonDb.js';

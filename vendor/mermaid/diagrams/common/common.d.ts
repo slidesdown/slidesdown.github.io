@@ -64,7 +64,8 @@ export declare const getMin: (...values: number[]) => number;
  * @param text - The text to convert
  * @returns The converted string
  */
-export declare const parseGenericTypes: (text: string) => string;
+export declare const parseGenericTypes: (input: string) => string;
+export declare const countOccurrence: (string: string, substring: string) => number;
 declare const _default: {
     getRows: (s?: string | undefined) => string[];
     sanitizeText: (text: string, config: MermaidConfig) => string;

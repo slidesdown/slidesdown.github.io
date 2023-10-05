@@ -12,9 +12,8 @@ export declare const diagram: {
             NON_IDENTIFYING: string;
             IDENTIFYING: string;
         };
-        parseDirective: (statement: any, context: any, type: any) => void;
         getConfig: () => import("../../config.type.js").ErDiagramConfig | undefined;
-        addEntity: (name: any) => any;
+        addEntity: (name: any, alias?: undefined) => any;
         addAttributes: (entityName: any, attribs: any) => void;
         getEntities: () => {};
         addRelationship: (entA: any, rolA: any, entB: any, rSpec: any) => void;

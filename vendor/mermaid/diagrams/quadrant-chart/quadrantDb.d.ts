@@ -14,7 +14,6 @@ declare function addPoint(textObj: LexTextObj, x: number, y: number): void;
 declare function setWidth(width: number): void;
 declare function setHeight(height: number): void;
 declare function getQuadrantData(): import("./quadrantBuilder.js").QuadrantBuildType;
-export declare const parseDirective: (statement: string, context: string, type: string) => void;
 declare const _default: {
     setWidth: typeof setWidth;
     setHeight: typeof setHeight;
@@ -28,7 +27,6 @@ declare const _default: {
     setYAxisBottomText: typeof setYAxisBottomText;
     addPoint: typeof addPoint;
     getQuadrantData: typeof getQuadrantData;
-    parseDirective: (statement: string, context: string, type: string) => void;
     clear: () => void;
     setAccTitle: (txt: string) => void;
     getAccTitle: () => string;
