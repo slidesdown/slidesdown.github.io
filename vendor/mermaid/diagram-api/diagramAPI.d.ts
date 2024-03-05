@@ -6,6 +6,9 @@ export declare const log: Record<import("../logger.js").LogLevel, {
 }>;
 export declare const setLogLevel: (level?: string | number) => void;
 export declare const getConfig: () => import("../config.type.js").MermaidConfig;
+export declare const setConfig: (conf: import("../config.type.js").MermaidConfig) => import("../config.type.js").MermaidConfig;
+export declare const defaultConfig: import("../config.type.js").MermaidConfig;
+export declare const setSiteConfig: (conf: import("../config.type.js").MermaidConfig) => import("../config.type.js").MermaidConfig;
 export declare const sanitizeText: (text: string) => string;
 export declare const setupGraphViewbox: (graph: any, svgElem: any, padding: any, useMaxWidth: any) => void;
 export declare const getCommonDb: () => typeof _commonDb;

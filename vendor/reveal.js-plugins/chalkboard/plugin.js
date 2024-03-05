@@ -3,7 +3,7 @@
  **
  ** A plugin for reveal.js adding a chalkboard.
  **
- ** Version: 2.3.2
+ ** Version: 2.3.3
  **
  ** License: MIT license (see LICENSE.md)
  **
@@ -364,8 +364,8 @@ const initChalkboard = function ( Reveal ) {
 		for ( var i = 0; i < length; i++ ) {
 			var colorButton = document.createElement( 'li' );
 			colorButton.setAttribute( 'data-color', i );
-			colorButton.innerHTML = '<i class="fa fa-square"></i>';
-			colorButton.style.color = colors[ i ].color;
+			colorButton.innerHTML = '<div width="2em" height="2em">&nbsp;</div>';
+			colorButton.style['background-color'] = colors[ i ].color;
 			colorButton.addEventListener( 'click', function ( e ) {
 				var element = e.target;
 				while ( !element.hasAttribute( 'data-color' ) ) {
@@ -443,6 +443,7 @@ const initChalkboard = function ( Reveal ) {
 			container.style.opacity = 1;
 			container.style.visibility = 'visible';
 			container.style.pointerEvents = 'none';
+			container.style['backdrop-filter'] = 'none';
 
 			var slides = document.querySelector( '.slides' );
 			var aspectRatio = Reveal.getConfig().width / Reveal.getConfig().height;
@@ -472,7 +473,7 @@ const initChalkboard = function ( Reveal ) {
 			if ( boardHandle ) {
 				var handle = document.createElement( 'div' );
 				handle.classList.add( 'boardhandle' );
-				handle.innerHTML = '<ul><li><a id="previousboard" href="#" title="Previous board"><i class="fas fa-chevron-up"></i></a></li><li><a id="nextboard" href="#" title="Next board"><i class="fas fa-chevron-down"></i></a></li></ul>';
+				handle.innerHTML = '<ul><li><a id="previousboard" href="#" title="Previous board">⌃</a></li><li><a id="nextboard" href="#" title="Next board">⌄</a></li></ul>';
 				handle.querySelector( '#previousboard' ).addEventListener( 'click', function ( e ) {
 					e.preventDefault();
 					switchBoard( board - 1 );
@@ -663,6 +664,15 @@ const initChalkboard = function ( Reveal ) {
 			} );
 			a.href = window.URL.createObjectURL( blob );
 		} catch ( error ) {
+			// https://stackoverflow.com/a/6234804
+			// escape data for proper handling of quotes and line breaks
+			// in case malicious user gets a chance to craft the exception message
+			error = String(error)
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
 			a.innerHTML += ' (' + error + ')';
 		}
 		a.click();

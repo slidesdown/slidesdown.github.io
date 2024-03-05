@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="generator" content="slidesdown 0.8.10" />
+  <meta name="generator" content="slidesdown 0.9.0" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Slidesdown</title>
@@ -17,7 +17,7 @@
         "imports": {
           "apexcharts": "/vendor/apexcharts/apexcharts.esm.js",
           "chartjs": "/vendor/chart.js/auto/auto.js",
-          "dompurify": "/vendor/dompurify/purify.es.js",
+          "dompurify": "/vendor/dompurify/purify.es.mjs",
           "marked": "/vendor/marked/marked.esm.js",
           "marked-base-url": "/vendor/marked-base-url/index.js",
           "marked-gfm-heading-id": "/vendor/marked-gfm-heading-id/index.js",
@@ -40,7 +40,7 @@
         }
       }
     </script>
-  <script type="module" crossorigin src="/assets/index-3063b54b.js"></script>
+  <script type="module" crossorigin src="/assets/index-sDBF0oO6.js"></script>
 </head>
 
 <body>
@@ -63,25 +63,32 @@
     </footer>
   </div>
 
-  <!-- INFO: support for non-esm plugins -->
-  <!-- <script> -->
-  <!--   window.__unocss = { -->
-  <!--     rules: [ -->
-  <!--       // custom rules... -->
-  <!--     ], -->
-  <!--     presets: [ -->
-  <!--       // custom presets... -->
-  <!--     ], -->
-  <!--     // ... -->
-  <!--   }; -->
-  <!-- </script> -->
-  <script src="/vendor/unocss/full.global.js"></script>
   <script src="/vendor/reveal.js/dist/reveal.js"></script>
   <script src="/vendor/reveal-pdfexport/pdfexport.js"></script>
   <script src="/vendor/reveal.js-plugins/chalkboard/plugin.js"></script>
   <script src="/vendor/reveal.js-plugins/customcontrols/plugin.js"></script>
-  
   <script type="module" src="/init.js"></script>
+  <script src="/vendor/unocss/preset-attributify.global.js"></script>
+  <script src="/vendor/unocss/preset-icons.global.js"></script>
+  <script src="/vendor/unocss/preset-typography.global.js"></script>
+  <script src="/vendor/unocss/preset-uno.global.js"></script>
+  <script src="/vendor/unocss/preset-web-fonts.global.js"></script>
+  <script>
+    window.__unocss = {
+      presets: [
+        () => window.__unocss_runtime.presets.presetAttributify(),
+        () =>
+          window.__unocss_runtime.presets.presetIcons({
+            scale: 1.2,
+            cdn: "/vendor/",
+          }),
+        () => window.__unocss_runtime.presets.presetTypography(),
+        () => window.__unocss_runtime.presets.presetUno(),
+        () => window.__unocss_runtime.presets.presetWebFonts(),
+      ],
+    };
+  </script>
+  <script src="/vendor/unocss/core.global.js"></script>
   <!-- DOCKER_LOADER_LINE -->
   <!-- <script -->
   <!--   async -->

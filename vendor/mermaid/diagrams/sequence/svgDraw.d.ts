@@ -4,8 +4,6 @@ export function drawPopup(elem: any, actor: any, minMenuWidth: any, textAttrs: a
     height: any;
     width: any;
 };
-export function popupMenu(popid: any): string;
-export function popdownMenu(popid: any): string;
 export function drawText(elem: any, textData: any): any[];
 export function drawLabel(elem: any, txtObject: any): any;
 export function fixLifeLineHeights(diagram: any, actors: any, actorKeys: any, conf: any): void;
@@ -67,8 +65,6 @@ declare namespace _default {
     export { insertClockIcon };
     export { getTextObj };
     export { getNoteRect };
-    export { popupMenu };
-    export { popdownMenu };
     export { fixLifeLineHeights };
     export { sanitizeUrl };
 }

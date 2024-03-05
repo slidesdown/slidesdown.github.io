@@ -130,6 +130,7 @@ declare class Theme {
     quadrantInternalBorderStrokeFill: any;
     quadrantExternalBorderStrokeFill: any;
     quadrantTitleFill: any;
+    xyChart: any;
     classText: any;
     requirementBackground: any;
     requirementBorderColor: any;
