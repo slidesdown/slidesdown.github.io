@@ -45,7 +45,7 @@ declare const db: {
     readonly setHierarchy: (block: Block[]) => void;
     readonly getBlock: (id: string) => Block;
     readonly setBlock: (block: Block) => void;
-    readonly getColumns: (blockid: string) => number;
+    readonly getColumns: (blockId: string) => number;
     readonly getClasses: () => Record<string, ClassDef>;
     readonly clear: () => void;
     readonly generateId: () => string;
