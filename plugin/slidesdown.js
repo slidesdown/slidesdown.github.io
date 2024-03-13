@@ -151,7 +151,7 @@ const Plugin = () => {
 
     if (notesMatch.length === 2) {
       content = notesMatch[0] + '<aside class="notes">' +
-        SANITIZE(await this.marked.parse(notesMatch[1].trim())) + "</aside>";
+        SANITIZE(await marked.parse(notesMatch[1].trim())) + "</aside>";
     }
 
     // prevent script end tags in the content from interfering
@@ -170,10 +170,10 @@ const Plugin = () => {
     options = getSlidifyOptions(options);
 
     const separatorRegex = new RegExp(
-        options.separator +
-          (options.verticalSeparator ? "|" + options.verticalSeparator : ""),
-        "mg",
-      ),
+      options.separator +
+      (options.verticalSeparator ? "|" + options.verticalSeparator : ""),
+      "mg",
+    ),
       horizontalSeparatorRegex = new RegExp(options.separator),
       verticalSeparatorRegex = new RegExp(
         options.verticalSeparator ? "|" + options.verticalSeparator : "",
@@ -237,7 +237,7 @@ const Plugin = () => {
       if (sectionStack[i] instanceof Array) {
         // console.log("sectionStack array");
         const section_promises = [];
-        sectionStack[i].forEach(function (child) {
+        sectionStack[i].forEach(function(child) {
           section_promises.push(
             createMarkdownSlide(child, options).then((content) =>
               "<section data-markdown>" + content +
@@ -252,7 +252,7 @@ const Plugin = () => {
             ) =>
               resolve(
                 "<section " + options.attributes + ">" + res.join("") +
-                  "</section>",
+                "</section>",
               )
             );
           }),
@@ -404,6 +404,9 @@ const Plugin = () => {
     if (mergedMetadata.fontawesomePro) {
       mergedMetadata.fontawesomeFree = false;
     }
+    if (mergedMetadata.fontawesomeFree) {
+      mergedMetadata.fontawesomePro = false;
+    }
     if (
       // since revealjsConfig.controls is true by default, only decktape and
       // similar tools are able to override it .. so prefer whatever these tools
@@ -448,8 +451,8 @@ const Plugin = () => {
    */
   function hideCustomControlsIfVisiblityChanges(element) {
     // console.log("hideCustomControlsIfVisiblityChanges");
-    const observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
         const style = window.getComputedStyle(mutation.target, null);
         const display = style?.getPropertyValue("display");
         if (display === "none") {
@@ -485,11 +488,11 @@ const Plugin = () => {
       scope.querySelectorAll(
         "section[data-markdown]:not([data-markdown-parsed])",
       ),
-    ).forEach(function (section, _i) {
+    ).forEach(function(section, _i) {
       if (section.getAttribute("data-markdown").length) {
         const promise = loadExternalMarkdown(section).then(
           // Finished loading external file
-          async function (xhr, _url) {
+          async function(xhr, _url) {
             if (!BASE_URL) {
               // TODO: add support for multiple markdown elements
               const base_url = new URL(xhr.responseURL);
@@ -533,7 +536,7 @@ const Plugin = () => {
             });
           },
           // Failed to load markdown
-          function (xhr, url) {
+          function(xhr, url) {
             section.outerHTML = '<section data-state="alert">' +
               "ERROR: The attempt to fetch " + url +
               " failed with HTTP status " + xhr.status + "." +
@@ -563,7 +566,7 @@ const Plugin = () => {
 
   function loadExternalMarkdown(section) {
     // console.log("loadExternalMarkdown");
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       const xhr = new XMLHttpRequest();
       const url = section.getAttribute("data-markdown");
       const datacharset = section.getAttribute("data-charset");
@@ -573,7 +576,7 @@ const Plugin = () => {
         xhr.overrideMimeType("text/html; charset=" + datacharset);
       }
 
-      xhr.onreadystatechange = function (_section, xhr) {
+      xhr.onreadystatechange = function(_section, xhr) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
           // file protocol yields status code 0 (useful for local debug, mobile applications etc.)
           if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 0) {
@@ -591,8 +594,8 @@ const Plugin = () => {
       } catch (e) {
         console.warn(
           "Failed to get the Markdown file " + url +
-            ". Make sure that the presentation and the file are served by a HTTP server and the file can be found there. " +
-            e,
+          ". Make sure that the presentation and the file are served by a HTTP server and the file can be found there. " +
+          e,
         );
         resolve(xhr, url);
       }
@@ -713,7 +716,7 @@ const Plugin = () => {
     let sectionNumber = 0;
     const promises = [];
     [].slice.call(sections).forEach((section) => {
-      const parse = async function (section) {
+      const parse = async function(section) {
         section.setAttribute("data-markdown-parsed", true);
 
         const notes = section.querySelector("aside.notes");
@@ -734,11 +737,11 @@ const Plugin = () => {
           section,
           null,
           section.getAttribute("data-element-attributes") ||
-            section.parentNode.getAttribute("data-element-attributes") ||
-            DEFAULT_ELEMENT_ATTRIBUTES_SEPARATOR,
+          section.parentNode.getAttribute("data-element-attributes") ||
+          DEFAULT_ELEMENT_ATTRIBUTES_SEPARATOR,
           section.getAttribute("data-attributes") ||
-            section.parentNode.getAttribute("data-attributes") ||
-            DEFAULT_SLIDE_ATTRIBUTES_SEPARATOR,
+          section.parentNode.getAttribute("data-attributes") ||
+          DEFAULT_SLIDE_ATTRIBUTES_SEPARATOR,
         );
 
         // If there were notes, we need to re-add them after
@@ -766,7 +769,7 @@ const Plugin = () => {
      * Starts processing and converting Markdown within the
      * current reveal.js deck.
      */
-    init: function (reveal) {
+    init: function(reveal) {
       // console.log("init");
       deck = reveal;
 
@@ -801,14 +804,12 @@ const Plugin = () => {
         if (language === "mermaid") {
           // INFO: height and width are set to work around bug https://github.com/chartjs/Chart.js/issues/5805
           DIAGRAM_COUNTER += 1;
-          return `<div data-mermaid-id="mermaid-${DIAGRAM_COUNTER}" data-mermaid="${
-            btoa(code)
-          }"></div>`;
+          return `<div data-mermaid-id="mermaid-${DIAGRAM_COUNTER}" data-mermaid="${btoa(code)
+            }"></div>`;
         } else if (language === "chartjs") {
           // INFO: maybe set height and width are to work around bug https://github.com/chartjs/Chart.js/issues/5805
-          return `<div><div style="display: flex; align-items: center; justify-content: center; position: relative; width: 100%; height: 100%;"><canvas data-chartjs=${
-            btoa(code)
-          }></canvas></div></div>`;
+          return `<div><div style="display: flex; align-items: center; justify-content: center; position: relative; width: 100%; height: 100%;"><canvas data-chartjs=${btoa(code)
+            }></canvas></div></div>`;
         } else if (
           language === "apexchart"
         ) {
@@ -821,14 +822,26 @@ const Plugin = () => {
 
       return processSlides(deck.getRevealElement()).then(() => {
         // Marked options: https://marked.js.org/using_advanced#options
+        let base_url;
         if (!markedOptions.baseUrl) {
+          base_url = BASE_URL;
           marked.use(baseUrl(BASE_URL));
         } else {
+          base_url = markedOptions.baseUrl;
           marked.use(baseUrl(markedOptions.baseUrl));
           delete markedOptions.baseUrl;
         }
         marked.use(gfmHeadingId());
         markedOptions.async = true;
+
+        const a_href_regex_single = /^(<a.* href=')([^']+)('.*>\n*)$/
+        const a_href_regex = /^(<a.* href=")([^"]+)(".*>\n*)$/
+        const img_src_regex_single = /^(<img.* src=')([^']+)('.*>\n*)$/
+        const img_src_regex = /^(<img.* src=")([^"]+)(".*>\n*)$/
+        const isUrl = /^https?:\/\//
+        const isAbsolute = /^\//
+        const isLocal = /^#/
+        // const isRelative = /^(\.\.\/|\.\/)/
 
         const markedConfig = {
           ...markedOptions,
@@ -839,7 +852,26 @@ const Plugin = () => {
             },
           },
           walkTokens: (token) => {
-            if (token.type === "code") {
+            if (token.type === "html") {
+              // baseUrl for html elements a and img
+              let match;
+              if (match = a_href_regex.exec(token.text) || a_href_regex_single.exec(token.text)) {
+                const ref = match[2];
+                const needsRebase = !(isUrl.test(ref) || isAbsolute.test(ref) || isLocal.test(ref))
+                // const needsRebase = isRelative.test(ref)
+                if (needsRebase) {
+                  token.text = `${match[1]}${base_url}${match[2]}${match[3]}`
+                }
+              }
+              if (match = img_src_regex.exec(token.text) || img_src_regex_single.exec(token.text)) {
+                const ref = match[2];
+                const needsRebase = !(isUrl.test(ref) || isAbsolute.test(ref) || isLocal.test(ref))
+                // const needsRebase = isRelative.test(ref)
+                if (needsRebase) {
+                  token.text = `${match[1]}${base_url}${match[2]}${match[3]}`
+                }
+              }
+            } else if (token.type === "code") {
               token.text = codeHandler(token.text, token.lang);
             }
           },
