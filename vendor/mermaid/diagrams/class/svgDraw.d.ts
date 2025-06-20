@@ -10,7 +10,7 @@ export function drawNote(elem: SVGSVGElement, note: {
     id: string;
     text: string;
     class: string;
-}, conf: any, diagObj: any): {
+}, conf: any, _diagObj: any): {
     id: string;
     text: string;
     width: number;

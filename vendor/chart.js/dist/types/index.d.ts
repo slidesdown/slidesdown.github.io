@@ -17,7 +17,7 @@ export {default as ArcElement, ArcProps} from '../elements/element.arc.js';
 export {default as PointElement, PointProps} from '../elements/element.point.js';
 export {Animation, Animations, Animator, AnimationEvent} from './animation.js';
 export {Color} from './color.js';
-export {ChartArea, Point} from './geometric.js';
+export {ChartArea, Point, TRBL} from './geometric.js';
 export {LayoutItem, LayoutPosition} from './layout.js';
 
 export interface ScriptableContext<TType extends ChartType> {
@@ -281,7 +281,7 @@ export interface DoughnutControllerDatasetOptions
   spacing: number;
 }
 
-export interface DoughnutAnimationOptions {
+export interface DoughnutAnimationOptions extends AnimationSpec<'doughnut'> {
   /**
    *   If true, the chart will animate in with a rotation animation. This property is in the options.animation object.
    * @default true
@@ -429,6 +429,15 @@ export declare const RadarController: ChartComponent & {
   prototype: RadarController;
   new (chart: Chart, datasetIndex: number): RadarController;
 };
+
+interface ChartMetaClip {
+  left: number | boolean;
+  top: number | boolean;
+  right: number | boolean;
+  bottom: number | boolean;
+  disabled: boolean;
+}
+
 interface ChartMetaCommon<TElement extends Element = Element, TDatasetElement extends Element = Element> {
   type: string;
   controller: DatasetController;
@@ -462,6 +471,7 @@ interface ChartMetaCommon<TElement extends Element = Element, TDatasetElement ex
   _sorted: boolean;
   _stacked: boolean | 'single';
   _parsed: unknown[];
+  _clip: ChartMetaClip;
 }
 
 export type ChartMeta<
@@ -1070,9 +1080,10 @@ export interface Plugin<TType extends ChartType = ChartType, O = AnyObject> exte
    * @param {ChartEvent} args.event - The event object.
    * @param {boolean} args.replay - True if this event is replayed from `Chart.update`
    * @param {boolean} args.inChartArea - The event position is inside chartArea
+   * @param {boolean} [args.changed] - Set to true if the plugin needs a render. Should only be changed to true, because this args object is passed through all plugins.
    * @param {object} options - The plugin options.
    */
-  beforeEvent?(chart: Chart<TType>, args: { event: ChartEvent, replay: boolean, cancelable: true, inChartArea: boolean }, options: O): boolean | void;
+  beforeEvent?(chart: Chart<TType>, args: { event: ChartEvent, replay: boolean, changed?: boolean; cancelable: true, inChartArea: boolean }, options: O): boolean | void;
   /**
    * @desc Called after the `event` has been consumed. Note that this hook
    * will not be called if the `event` has been previously discarded.
@@ -1508,7 +1519,7 @@ export declare const Ticks: {
      * @param ticks the list of ticks being converted
      * @return string representation of the tickValue parameter
      */
-    numeric(tickValue: number, index: number, ticks: { value: number }[]): string;
+    numeric(this: Scale, tickValue: number, index: number, ticks: { value: number }[]): string;
     /**
      * Formatter for logarithmic ticks
      * @param tickValue the value to be formatted
@@ -1516,7 +1527,7 @@ export declare const Ticks: {
      * @param ticks the list of ticks being converted
      * @return string representation of the tickValue parameter
      */
-    logarithmic(tickValue: number, index: number, ticks: { value: number }[]): string;
+    logarithmic(this: Scale, tickValue: number, index: number, ticks: { value: number }[]): string;
   };
 };
 
@@ -1611,12 +1622,22 @@ export interface CoreChartOptions<TType extends ChartType> extends ParsingOption
    * base background color
    * @see Defaults.backgroundColor
    */
-  backgroundColor: Scriptable<Color, ScriptableContext<TType>>;
+  backgroundColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
+  /**
+   * base hover background color
+   * @see Defaults.hoverBackgroundColor
+   */
+  hoverBackgroundColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
   /**
    * base border color
    * @see Defaults.borderColor
    */
-  borderColor: Scriptable<Color, ScriptableContext<TType>>;
+  borderColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
+  /**
+   * base hover border color
+   * @see Defaults.hoverBorderColor
+   */
+  hoverBorderColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
   /**
    * base font
    * @see Defaults.font
@@ -1827,6 +1848,12 @@ export interface ArcBorderRadius {
 }
 
 export interface ArcOptions extends CommonElementOptions {
+  /**
+   * If true, Arc can take up 100% of a circular graph without any visual split or cut. This option doesn't support borderRadius and borderJoinStyle miter
+   * @default true
+   */
+  selfJoin: boolean;
+
   /**
    * Arc stroke alignment.
    */
@@ -2344,6 +2371,7 @@ export interface LegendElement<TType extends ChartType> extends Element<AnyObjec
   ctx: CanvasRenderingContext2D;
   legendItems?: LegendItem[];
   options: LegendOptions<TType>;
+  fit(): void;
 }
 
 export interface LegendOptions<TType extends ChartType> {
@@ -2404,11 +2432,6 @@ export interface LegendOptions<TType extends ChartType> {
      * @default fontSize
      */
     boxHeight: number;
-    /**
-     * Padding between the color box and the text
-     * @default 1
-     */
-    boxPadding: number;
     /**
      * Color of label
      * @see Defaults.color
@@ -3581,6 +3604,8 @@ export type RadialLinearScaleOptions = CoreScaleOptions & {
 };
 
 export interface RadialLinearScale<O extends RadialLinearScaleOptions = RadialLinearScaleOptions> extends Scale<O> {
+  xCenter: number;
+  yCenter: number;
   setCenterPoint(leftMovement: number, rightMovement: number, topMovement: number, bottomMovement: number): void;
   getIndexAngle(index: number): number;
   getDistanceFromCenterForValue(value: number): number;
@@ -3635,7 +3660,7 @@ export interface CartesianParsedData extends Point {
   }
 }
 
-interface BarParsedData extends CartesianParsedData {
+export interface BarParsedData extends CartesianParsedData {
   // Only specified if floating bars are show
   _custom?: {
     barStart: number;
@@ -3647,12 +3672,12 @@ interface BarParsedData extends CartesianParsedData {
   }
 }
 
-interface BubbleParsedData extends CartesianParsedData {
+export interface BubbleParsedData extends CartesianParsedData {
   // The bubble radius value
   _custom: number;
 }
 
-interface RadialParsedData {
+export interface RadialParsedData {
   r: number;
 }
 
@@ -3744,13 +3769,16 @@ export type ScaleChartOptions<TType extends ChartType = ChartType> = {
   };
 };
 
-export type ChartOptions<TType extends ChartType = ChartType> = DeepPartial<
+export type ChartOptions<TType extends ChartType = ChartType> = Exclude<
+DeepPartial<
 CoreChartOptions<TType> &
 ElementChartOptions<TType> &
 PluginChartOptions<TType> &
 DatasetChartOptions<TType> &
 ScaleChartOptions<TType> &
 ChartTypeRegistry[TType]['chartOptions']
+>,
+DeepPartial<unknown[]>
 >;
 
 export type DefaultDataPoint<TType extends ChartType> = DistributiveArray<ChartTypeRegistry[TType]['defaultDataPoint']>;
@@ -3815,7 +3843,7 @@ export interface ChartConfiguration<
 > {
   type: TType;
   data: ChartData<TType, TData, TLabel>;
-  options?: ChartOptions<TType>;
+  options?: ChartOptions<TType> | undefined;
   plugins?: Plugin<TType>[];
   platform?: typeof BasePlatform;
 }
@@ -3826,6 +3854,6 @@ export interface ChartConfigurationCustomTypesPerDataset<
   TLabel = unknown
 > {
   data: ChartDataCustomTypesPerDataset<TType, TData, TLabel>;
-  options?: ChartOptions<TType>;
+  options?: ChartOptions<TType> | undefined;
   plugins?: Plugin<TType>[];
 }

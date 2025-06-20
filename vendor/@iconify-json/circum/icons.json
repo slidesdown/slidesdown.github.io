@@ -16,10 +16,16 @@
 		"samples": [
 			"text",
 			"pill",
-			"zoom-out"
+			"zoom-out",
+			"voicemail",
+			"no-waiting-sign",
+			"crop"
 		],
 		"height": 24,
-		"category": "General",
+		"category": "UI 24px",
+		"tags": [
+			"Has Padding"
+		],
 		"palette": false
 	},
 	"lastModified": 1713763967,

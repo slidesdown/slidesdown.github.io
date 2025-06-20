@@ -16,11 +16,18 @@
 		"samples": [
 			"home-filled",
 			"partly-cloudy",
-			"avatar"
+			"avatar",
+			"briefcase",
+			"platform",
+			"flag"
 		],
 		"height": 32,
 		"displayHeight": 16,
-		"category": "General",
+		"category": "UI 16px / 32px",
+		"tags": [
+			"Precise Shapes",
+			"Has Padding"
+		],
 		"palette": false
 	},
 	"lastModified": 1710139697,

@@ -62,8 +62,14 @@ declare class Theme {
     critBorderColor: string;
     critBkgColor: string;
     todayLineColor: string;
+    vertLineColor: string;
     personBorder: any;
     personBkg: string;
+    archEdgeColor: string;
+    archEdgeArrowColor: string;
+    archEdgeWidth: string;
+    archGroupBorderColor: any;
+    archGroupBorderWidth: string;
     labelColor: string;
     errorBkgColor: string;
     errorTextColor: string;
@@ -81,6 +87,8 @@ declare class Theme {
     cScale10: any;
     cScale11: any;
     scaleLabelColor: any;
+    rowOdd: any;
+    rowEven: any;
     transitionColor: any;
     transitionLabelColor: any;
     stateLabelColor: any;
@@ -139,6 +147,15 @@ declare class Theme {
     quadrantInternalBorderStrokeFill: any;
     quadrantExternalBorderStrokeFill: any;
     quadrantTitleFill: any;
+    packet: {
+        startByteColor: any;
+        endByteColor: any;
+        labelColor: any;
+        titleColor: any;
+        blockStrokeColor: any;
+        blockFillColor: string;
+    } | undefined;
+    radar: any;
     xyChart: any;
     requirementBackground: any;
     requirementBorderColor: any;

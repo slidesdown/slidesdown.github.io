@@ -17,13 +17,14 @@ export function setIncludes(txt: any): void;
 export function getIncludes(): any[];
 export function setExcludes(txt: any): void;
 export function getExcludes(): any[];
-export function getLinks(): {};
+export function getLinks(): Map<any, any>;
 export function addSection(txt: any): void;
 export function getSections(): any[];
 export function getTasks(): any[];
 export function isInvalidDate(date: any, dateFormat: any, excludes: any, includes: any): any;
 export function setWeekday(txt: any): void;
 export function getWeekday(): string;
+export function setWeekend(startDay: any): void;
 export function addTask(descr: any, data: any): void;
 export function findTaskById(id: any): any;
 export function addTaskOrg(descr: any, data: any): void;
@@ -72,6 +73,7 @@ declare namespace _default {
     export { isInvalidDate };
     export { setWeekday };
     export { getWeekday };
+    export { setWeekend };
 }
 export default _default;
 import { setAccTitle } from '../common/commonDb.js';

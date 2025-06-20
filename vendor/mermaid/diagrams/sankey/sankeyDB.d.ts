@@ -9,7 +9,7 @@ declare class SankeyNode {
     constructor(ID: string);
 }
 declare const _default: {
-    nodesMap: Record<string, SankeyNode>;
+    nodesMap: Map<string, SankeyNode>;
     getConfig: () => import("../../config.type.js").SankeyDiagramConfig | undefined;
     getNodes: () => SankeyNode[];
     getLinks: () => SankeyLink[];

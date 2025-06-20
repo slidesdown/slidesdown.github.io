@@ -2,7 +2,9 @@ export interface ClassNode {
     id: string;
     type: string;
     label: string;
-    cssClasses: string[];
+    shape: string;
+    text: string;
+    cssClasses: string;
     methods: ClassMember[];
     members: ClassMember[];
     annotations: string[];
@@ -13,6 +15,7 @@ export interface ClassNode {
     linkTarget?: string;
     haveCallback?: boolean;
     tooltip?: string;
+    look?: string;
 }
 export type Visibility = '#' | '+' | '~' | '-' | '';
 export declare const visibilityValues: string[];
@@ -25,6 +28,7 @@ export declare class ClassMember {
     cssStyle: string;
     memberType: 'method' | 'attribute';
     visibility: Visibility;
+    text: string;
     /**
      * denote if static or to determine which css class to apply to the node
      * @defaultValue ''
@@ -53,7 +57,7 @@ export interface ClassNote {
     class: string;
     text: string;
 }
-export type ClassRelation = {
+export interface ClassRelation {
     id1: string;
     id2: string;
     relationTitle1: string;
@@ -67,12 +71,22 @@ export type ClassRelation = {
         type2: number;
         lineType: number;
     };
-};
+}
+export interface Interface {
+    id: string;
+    label: string;
+    classId: string;
+}
 export interface NamespaceNode {
     id: string;
     domId: string;
     classes: ClassMap;
     children: NamespaceMap;
 }
-export type ClassMap = Record<string, ClassNode>;
-export type NamespaceMap = Record<string, NamespaceNode>;
+export interface StyleClass {
+    id: string;
+    styles: string[];
+    textStyles: string[];
+}
+export type ClassMap = Map<string, ClassNode>;
+export type NamespaceMap = Map<string, NamespaceNode>;

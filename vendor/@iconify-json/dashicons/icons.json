@@ -16,10 +16,17 @@
 		"samples": [
 			"shortcode",
 			"businessperson",
-			"editor-expand"
+			"editor-expand",
+			"sort",
+			"category",
+			"columns"
 		],
 		"height": 20,
 		"category": "Archive / Unmaintained",
+		"tags": [
+			"Precise Shapes",
+			"Has Padding"
+		],
 		"palette": false
 	},
 	"lastModified": 1716788160,

@@ -1,4 +1,4 @@
-import type { D3Element } from '../../mermaidAPI.js';
+import type { D3Element } from '../../types.js';
 import type { MindmapNode } from './mindmapTypes.js';
 declare const db: {
     readonly clear: () => void;

@@ -1,4 +1,4 @@
-import type { Group } from '../../../../../diagram-api/types.js';
+import type { SVGGroup } from '../../../../../diagram-api/types.js';
 import type { AxisDataType, ChartComponent, XYChartAxisConfig, XYChartAxisThemeConfig } from '../../interfaces.js';
 export type AxisPosition = 'left' | 'right' | 'top' | 'bottom';
 export interface Axis extends ChartComponent {
@@ -9,4 +9,4 @@ export interface Axis extends ChartComponent {
     recalculateOuterPaddingToDrawBar(): void;
     setRange(range: [number, number]): void;
 }
-export declare function getAxis(data: AxisDataType, axisConfig: XYChartAxisConfig, axisThemeConfig: XYChartAxisThemeConfig, tmpSVGGroup: Group): Axis;
+export declare function getAxis(data: AxisDataType, axisConfig: XYChartAxisConfig, axisThemeConfig: XYChartAxisThemeConfig, tmpSVGGroup: SVGGroup): Axis;

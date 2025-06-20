@@ -6,4 +6,4 @@ export declare const log: Record<keyof typeof LEVELS, typeof console.log>;
  *
  * @param level - The level to set the logging to. Default is `"fatal"`
  */
-export declare const setLogLevel: (level?: keyof typeof LEVELS | number | string) => void;
+export declare const setLogLevel: (level?: keyof typeof LEVELS | number) => void;

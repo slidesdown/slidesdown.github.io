@@ -15,10 +15,16 @@
 		"samples": [
 			"lightning",
 			"credit-card-solid",
-			"pause"
+			"pause",
+			"bookmark-solid",
+			"plus",
+			"flag-solid"
 		],
 		"height": 16,
-		"category": "General",
+		"category": "UI 16px / 32px",
+		"tags": [
+			"Precise Shapes"
+		],
 		"palette": false
 	},
 	"lastModified": 1718879852,

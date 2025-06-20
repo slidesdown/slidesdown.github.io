@@ -1,10 +1,10 @@
-import type { DrawableElem, XYChartConfig, XYChartThemeConfig } from './chartBuilder/interfaces.js';
-import type { Group } from '../../diagram-api/types.js';
+import type { SVGGroup } from '../../diagram-api/types.js';
+import type { DrawableElem, XYChartConfig, XYChartData, XYChartThemeConfig } from './chartBuilder/interfaces.js';
 interface NormalTextType {
     type: 'text';
     text: string;
 }
-declare function setTmpSVGG(SVGG: Group): void;
+declare function setTmpSVGG(SVGG: SVGGroup): void;
 declare function setOrientation(orientation: string): void;
 declare function setXAxisTitle(title: NormalTextType): void;
 declare function setXAxisRangeData(min: number, max: number): void;
@@ -16,6 +16,7 @@ declare function setBarData(title: NormalTextType, data: number[]): void;
 declare function getDrawableElem(): DrawableElem[];
 declare function getChartThemeConfig(): XYChartThemeConfig;
 declare function getChartConfig(): XYChartConfig;
+declare function getXYChartData(): XYChartData;
 declare const _default: {
     getDrawableElem: typeof getDrawableElem;
     clear: () => void;
@@ -36,5 +37,6 @@ declare const _default: {
     setTmpSVGG: typeof setTmpSVGG;
     getChartThemeConfig: typeof getChartThemeConfig;
     getChartConfig: typeof getChartConfig;
+    getXYChartData: typeof getXYChartData;
 };
 export default _default;

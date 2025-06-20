@@ -15,11 +15,18 @@
 		"samples": [
 			"help-outline-badged",
 			"heart-broken-solid",
-			"shield-outline-alerted"
+			"shield-outline-alerted",
+			"bookmark-solid",
+			"check-line",
+			"tablet-solid"
 		],
 		"height": 36,
 		"displayHeight": 18,
-		"category": "General",
+		"category": "UI Other / Mixed Grid",
+		"tags": [
+			"Precise Shapes",
+			"Has Padding"
+		],
 		"palette": false
 	},
 	"lastModified": 1717394711,

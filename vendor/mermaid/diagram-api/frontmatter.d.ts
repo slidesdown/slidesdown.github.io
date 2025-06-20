@@ -1,7 +1,7 @@
-import type { MermaidConfig } from '../config.type.js';
+import type { GanttDiagramConfig, MermaidConfig } from '../config.type.js';
 interface FrontMatterMetadata {
     title?: string;
-    displayMode?: string;
+    displayMode?: GanttDiagramConfig['displayMode'];
     config?: MermaidConfig;
 }
 export interface FrontMatterResult {

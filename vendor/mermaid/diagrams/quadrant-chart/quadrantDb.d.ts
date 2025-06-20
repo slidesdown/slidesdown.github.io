@@ -1,7 +1,8 @@
-type LexTextObj = {
+import type { StylesObject } from './quadrantBuilder.js';
+interface LexTextObj {
     text: string;
     type: 'text' | 'markdown';
-};
+}
 declare function setQuadrant1Text(textObj: LexTextObj): void;
 declare function setQuadrant2Text(textObj: LexTextObj): void;
 declare function setQuadrant3Text(textObj: LexTextObj): void;
@@ -10,7 +11,9 @@ declare function setXAxisLeftText(textObj: LexTextObj): void;
 declare function setXAxisRightText(textObj: LexTextObj): void;
 declare function setYAxisTopText(textObj: LexTextObj): void;
 declare function setYAxisBottomText(textObj: LexTextObj): void;
-declare function addPoint(textObj: LexTextObj, x: number, y: number): void;
+declare function parseStyles(styles: string[]): StylesObject;
+declare function addPoint(textObj: LexTextObj, className: string, x: number, y: number, styles: string[]): void;
+declare function addClass(className: string, styles: string[]): void;
 declare function setWidth(width: number): void;
 declare function setHeight(height: number): void;
 declare function getQuadrantData(): import("./quadrantBuilder.js").QuadrantBuildType;
@@ -25,7 +28,9 @@ declare const _default: {
     setXAxisRightText: typeof setXAxisRightText;
     setYAxisTopText: typeof setYAxisTopText;
     setYAxisBottomText: typeof setYAxisBottomText;
+    parseStyles: typeof parseStyles;
     addPoint: typeof addPoint;
+    addClass: typeof addClass;
     getQuadrantData: typeof getQuadrantData;
     clear: () => void;
     setAccTitle: (txt: string) => void;

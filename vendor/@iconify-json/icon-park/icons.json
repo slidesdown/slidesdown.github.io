@@ -16,10 +16,18 @@
 		"samples": [
 			"add-one",
 			"english-mustache",
-			"basketball-clothes"
+			"basketball-clothes",
+			"sort",
+			"lightning",
+			"pinwheel"
 		],
 		"height": 24,
-		"category": "General",
+		"category": "UI Multicolor",
+		"tags": [
+			"Precise Shapes",
+			"Has Padding",
+			"Uses Stroke"
+		],
 		"palette": true
 	},
 	"lastModified": 1700989658,

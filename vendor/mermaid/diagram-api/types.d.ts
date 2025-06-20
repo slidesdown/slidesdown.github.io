@@ -1,6 +1,7 @@
+import type * as d3 from 'd3';
+import type { SetRequired } from 'type-fest';
 import type { Diagram } from '../Diagram.js';
 import type { BaseDiagramConfig, MermaidConfig } from '../config.type.js';
-import type * as d3 from 'd3';
 export interface DiagramMetadata {
     title?: string;
     config?: MermaidConfig;
@@ -30,6 +31,12 @@ export interface DiagramDB {
     setDisplayMode?: (title: string) => void;
     bindFunctions?: (element: Element) => void;
 }
+/**
+ * DiagramDB with fields that is required for all new diagrams.
+ */
+export type DiagramDBBase<T extends BaseDiagramConfig> = {
+    getConfig: () => Required<T>;
+} & SetRequired<DiagramDB, 'clear' | 'getAccTitle' | 'getDiagramTitle' | 'getAccDescription' | 'setAccDescription' | 'setAccTitle' | 'setDiagramTitle'>;
 export interface DiagramStyleClassDef {
     id: string;
     styles?: string[];
@@ -37,7 +44,7 @@ export interface DiagramStyleClassDef {
 }
 export interface DiagramRenderer {
     draw: DrawDefinition;
-    getClasses?: (text: string, diagram: Pick<DiagramDefinition, 'db'>) => Record<string, DiagramStyleClassDef>;
+    getClasses?: (text: string, diagram: Pick<DiagramDefinition, 'db'>) => Map<string, DiagramStyleClassDef>;
 }
 export interface DiagramDefinition {
     db: DiagramDB;
@@ -73,12 +80,12 @@ export type DiagramLoader = () => Promise<{
  */
 export type DrawDefinition = (text: string, id: string, version: string, diagramObject: Diagram) => void | Promise<void>;
 export interface ParserDefinition {
-    parse: (text: string) => void;
-    parser: {
+    parse: (text: string) => void | Promise<void>;
+    parser?: {
         yy: DiagramDB;
     };
 }
 export type HTML = d3.Selection<HTMLIFrameElement, unknown, Element | null, unknown>;
 export type SVG = d3.Selection<SVGSVGElement, unknown, Element | null, unknown>;
-export type Group = d3.Selection<SVGGElement, unknown, Element | null, unknown>;
+export type SVGGroup = d3.Selection<SVGGElement, unknown, Element | null, unknown>;
 export type DiagramStylesProvider = (options?: any) => string;

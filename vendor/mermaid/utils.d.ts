@@ -1,7 +1,6 @@
-import type { CurveFactory } from 'd3';
+import type { BaseType, CurveFactory } from 'd3';
 import type { MermaidConfig } from './config.type.js';
-import type { D3Element } from './mermaidAPI.js';
-import type { Point, TextDimensionConfig, TextDimensions } from './types.js';
+import type { D3Element, Point, TextDimensionConfig, TextDimensions } from './types.js';
 export declare const ZERO_WIDTH_SPACE = "\u200B";
 /**
  * Detects the init config object from the text
@@ -152,7 +151,7 @@ export declare const drawSimpleText: (elem: SVGElement, textData: {
     text: string;
     x: number;
     y: number;
-    anchor: 'start' | 'middle' | 'end';
+    anchor: "start" | "middle" | "end";
     fontFamily: string;
     fontSize: string | number;
     fontWeight: string | number;
@@ -171,7 +170,7 @@ export declare const wrapLabel: (label: string, maxWidth: number, config: WrapLa
  * This calculates the text's height, taking into account the wrap breaks and both the statically
  * configured height, width, and the length of the text (in pixels).
  *
- * If the wrapped text text has greater height, we extend the height, so it's value won't overflow.
+ * If the wrapped text has greater height, we extend the height, so it's value won't overflow.
  *
  * @param text - The text to measure
  * @param config - The config for fontSize, fontFamily, and fontWeight all impacting the
@@ -241,15 +240,15 @@ export declare const parseFontSize: (fontSize: string | number | undefined) => [
 export declare function cleanAndMerge<T>(defaultData: T, data?: Partial<T>): T;
 declare const _default: {
     assignWithDepth: (dst: any, src: any, { depth, clobber }?: {
-        depth?: number | undefined;
-        clobber?: boolean | undefined;
+        depth?: number;
+        clobber?: boolean;
     }) => any;
     wrapLabel: (label: string, maxWidth: number, config: WrapLabelConfig) => string;
     calculateTextHeight: typeof calculateTextHeight;
     calculateTextWidth: typeof calculateTextWidth;
     calculateTextDimensions: (text: string, config: TextDimensionConfig) => TextDimensions;
     cleanAndMerge: typeof cleanAndMerge;
-    detectInit: (text: string, config?: MermaidConfig | undefined) => MermaidConfig | undefined;
+    detectInit: (text: string, config?: MermaidConfig) => MermaidConfig | undefined;
     detectDirective: (text: string, type?: string | RegExp | null) => Directive | Directive[];
     isSubstringInArray: (str: string, arr: string[]) => number;
     interpolateToCurve: typeof interpolateToCurve;
@@ -267,8 +266,8 @@ declare const _default: {
     }) => string;
     runFunc: (functionName: string, ...params: unknown[]) => void;
     entityDecode: (html: string) => string;
-    insertTitle: (parent: any, cssClass: string, titleTopMargin: number, title?: string | undefined) => void;
-    parseFontSize: (fontSize: string | number | undefined) => [(number | undefined)?, (string | undefined)?];
+    insertTitle: (parent: D3Element, cssClass: string, titleTopMargin: number, title?: string) => void;
+    parseFontSize: (fontSize: string | number | undefined) => [number?, string?];
     InitIDGenerator: typeof InitIDGenerator;
 };
 export default _default;
@@ -284,3 +283,15 @@ export declare const encodeEntities: (text: string) => string;
  */
 export declare const decodeEntities: (text: string) => string;
 export declare const isString: (value: unknown) => value is string;
+export declare const getEdgeId: (from: string, to: string, { counter, prefix, suffix, }: {
+    counter?: number;
+    prefix?: string;
+    suffix?: string;
+}, id?: string) => string;
+/**
+ * D3's `selection.attr` method doesn't officially support `undefined`.
+ *
+ * However, it seems if you do pass `undefined`, it seems to be treated as `null`
+ * (e.g. it removes the attribute).
+ */
+export declare function handleUndefinedAttr(attrValue: Parameters<d3.Selection<BaseType, unknown, HTMLElement, any>['attr']>[1] | undefined): string | number | boolean | readonly (string | number)[] | import("d3-selection").ValueFn<BaseType, unknown, string | number | boolean | readonly (string | number)[] | null> | null;

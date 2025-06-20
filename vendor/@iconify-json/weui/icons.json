@@ -14,10 +14,16 @@
 		"samples": [
 			"search-outlined",
 			"clip-filled",
-			"done-filled"
+			"done-filled",
+			"more-filled",
+			"arrow-filled",
+			"play-outlined"
 		],
 		"height": 24,
-		"category": "General",
+		"category": "UI 24px",
+		"tags": [
+			"Has Padding"
+		],
 		"palette": false
 	},
 	"lastModified": 1718878404,

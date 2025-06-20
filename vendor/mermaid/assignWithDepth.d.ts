@@ -24,7 +24,7 @@
  * * clobber: should dissimilar types clobber
  */
 declare const assignWithDepth: (dst: any, src: any, { depth, clobber }?: {
-    depth?: number | undefined;
-    clobber?: boolean | undefined;
+    depth?: number;
+    clobber?: boolean;
 }) => any;
 export default assignWithDepth;

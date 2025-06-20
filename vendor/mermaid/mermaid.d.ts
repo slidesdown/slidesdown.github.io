@@ -1,12 +1,21 @@
+/**
+ * Web page integration module for the mermaid framework. It uses the mermaidAPI for mermaid
+ * functionality and to render the diagrams to svg code!
+ */
+import { registerIconPacks } from './rendering-util/icons.js';
 import type { MermaidConfig } from './config.type.js';
-import type { ParseOptions, RenderResult } from './mermaidAPI.js';
-import { mermaidAPI } from './mermaidAPI.js';
 import { detectType } from './diagram-api/detectType.js';
+import type { ExternalDiagramDefinition, SVG, SVGGroup } from './diagram-api/types.js';
 import type { ParseErrorFunction } from './Diagram.js';
-import type { DetailedError } from './utils.js';
-import type { ExternalDiagramDefinition } from './diagram-api/types.js';
 import type { UnknownDiagramError } from './errors.js';
-export type { MermaidConfig, DetailedError, ExternalDiagramDefinition, ParseErrorFunction, RenderResult, ParseOptions, UnknownDiagramError, };
+import type { InternalHelpers } from './internals.js';
+import { mermaidAPI } from './mermaidAPI.js';
+import type { LayoutLoaderDefinition, RenderOptions } from './rendering-util/render.js';
+import { registerLayoutLoaders } from './rendering-util/render.js';
+import type { LayoutData } from './rendering-util/types.js';
+import type { ParseOptions, ParseResult, RenderResult } from './types.js';
+import type { DetailedError } from './utils.js';
+export type { DetailedError, ExternalDiagramDefinition, InternalHelpers, LayoutData, LayoutLoaderDefinition, MermaidConfig, ParseErrorFunction, ParseOptions, ParseResult, RenderOptions, RenderResult, SVG, SVGGroup, UnknownDiagramError, };
 export interface RunOptions {
     /**
      * The query selector to use when finding elements to render. Default: `".mermaid"`.
@@ -66,14 +75,14 @@ declare const initialize: (config: MermaidConfig) => void;
  * - A W3C selector, a la `.mermaid`
  * @param callback - Called once for each rendered diagram's id.
  */
-declare const init: (config?: MermaidConfig, nodes?: string | HTMLElement | NodeListOf<HTMLElement>, callback?: ((id: string) => unknown) | undefined) => Promise<void>;
+declare const init: (config?: MermaidConfig, nodes?: string | HTMLElement | NodeListOf<HTMLElement>, callback?: (id: string) => unknown) => Promise<void>;
 /**
  * Used to register external diagram types.
  * @param diagrams - Array of {@link ExternalDiagramDefinition}.
  * @param opts - If opts.lazyLoad is false, the diagrams will be loaded immediately.
  */
 declare const registerExternalDiagrams: (diagrams: ExternalDiagramDefinition[], { lazyLoad, }?: {
-    lazyLoad?: boolean | undefined;
+    lazyLoad?: boolean;
 }) => Promise<void>;
 /**
  * ##contentLoaded Callback function that is called when page is loaded. This functions fetches
@@ -85,7 +94,7 @@ declare const contentLoaded: () => void;
  * ## setParseErrorHandler  Alternative to directly setting parseError using:
  *
  * ```js
- * mermaid.parseError = function(err,hash){=
+ * mermaid.parseError = function(err,hash) {
  *   forExampleDisplayErrorInGui(err);  // do something with the error
  * };
  * ```
@@ -99,13 +108,25 @@ declare const setParseErrorHandler: (parseErrorHandler: (err: any, hash: any) =>
 /**
  * Parse the text and validate the syntax.
  * @param text - The mermaid diagram definition.
- * @param parseOptions - Options for parsing.
- * @returns true if the diagram is valid, false otherwise if parseOptions.suppressErrors is true.
- * @throws Error if the diagram is invalid and parseOptions.suppressErrors is false.
+ * @param parseOptions - Options for parsing. @see {@link ParseOptions}
+ * @returns If valid, {@link ParseResult} otherwise `false` if parseOptions.suppressErrors is `true`.
+ * @throws Error if the diagram is invalid and parseOptions.suppressErrors is false or not set.
+ *
+ * @example
+ * ```js
+ * console.log(await mermaid.parse('flowchart \n a --> b'));
+ * // { diagramType: 'flowchart-v2' }
+ * console.log(await mermaid.parse('wrong \n a --> b', { suppressErrors: true }));
+ * // false
+ * console.log(await mermaid.parse('wrong \n a --> b', { suppressErrors: false }));
+ * // throws Error
+ * console.log(await mermaid.parse('wrong \n a --> b'));
+ * // throws Error
+ * ```
  */
-declare const parse: (text: string, parseOptions?: ParseOptions) => Promise<boolean | void>;
+declare const parse: typeof mermaidAPI.parse;
 /**
- * Function that renders an svg with a graph from a chart definition. Usage example below.
+ * Function that renders an SVG with a graph from a chart definition. Usage example below.
  *
  * ```javascript
  *  element = document.querySelector('#graphDiv');
@@ -127,20 +148,29 @@ declare const parse: (text: string, parseOptions?: ParseOptions) => Promise<bool
  *   element will be removed when rendering is completed.
  * @returns Returns the SVG Definition and BindFunctions.
  */
-declare const render: (id: string, text: string, container?: Element) => Promise<RenderResult>;
+declare const render: typeof mermaidAPI.render;
 export interface Mermaid {
     startOnLoad: boolean;
     parseError?: ParseErrorFunction;
+    /**
+     * @deprecated Use {@link parse} and {@link render} instead. Please [open a discussion](https://github.com/mermaid-js/mermaid/discussions) if your use case does not fit the new API.
+     * @internal
+     */
     mermaidAPI: typeof mermaidAPI;
     parse: typeof parse;
     render: typeof render;
+    /**
+     * @deprecated Use {@link initialize} and {@link run} instead.
+     */
     init: typeof init;
     run: typeof run;
+    registerLayoutLoaders: typeof registerLayoutLoaders;
     registerExternalDiagrams: typeof registerExternalDiagrams;
     initialize: typeof initialize;
     contentLoaded: typeof contentLoaded;
     setParseErrorHandler: typeof setParseErrorHandler;
     detectType: typeof detectType;
+    registerIconPacks: typeof registerIconPacks;
 }
 declare const mermaid: Mermaid;
 export default mermaid;

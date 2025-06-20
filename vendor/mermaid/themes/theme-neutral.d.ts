@@ -67,8 +67,16 @@ declare class Theme {
     critBkgColor: string;
     critBorderColor: string;
     todayLineColor: string;
+    vertLineColor: string;
     personBorder: any;
     personBkg: string;
+    archEdgeColor: string;
+    archEdgeArrowColor: string;
+    archEdgeWidth: string;
+    archGroupBorderColor: any;
+    archGroupBorderWidth: string;
+    rowOdd: any;
+    rowEven: string;
     labelColor: string;
     errorBkgColor: string;
     errorTextColor: string;
@@ -136,6 +144,7 @@ declare class Theme {
     quadrantExternalBorderStrokeFill: any;
     quadrantTitleFill: any;
     xyChart: any;
+    radar: any;
     requirementBackground: any;
     requirementBorderColor: any;
     requirementBorderSize: any;

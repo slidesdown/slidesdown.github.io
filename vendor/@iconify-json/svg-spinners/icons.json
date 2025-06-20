@@ -15,10 +15,18 @@
 		"samples": [
 			"tadpole",
 			"pulse",
-			"3-dots-rotate"
+			"3-dots-rotate",
+			"90-ring",
+			"clock",
+			"bars-fade"
 		],
 		"height": 24,
-		"category": "Animated Icons",
+		"category": "UI 24px",
+		"tags": [
+			"Precise Shapes",
+			"Has Padding",
+			"Contains Animations"
+		],
 		"palette": false
 	},
 	"lastModified": 1673787445,

@@ -1,5 +1,5 @@
-import type { Block } from './blockTypes.js';
 import type { BlockDB } from './blockDB.js';
+import type { Block } from './blockTypes.js';
 declare function calculateBlockSize(elem: d3.Selection<SVGGElement, unknown, HTMLElement, any>, block: any, db: any): Promise<void>;
 type ActionFun = typeof calculateBlockSize;
 export declare function insertBlockPositioned(elem: any, block: Block, db: any): Promise<void>;

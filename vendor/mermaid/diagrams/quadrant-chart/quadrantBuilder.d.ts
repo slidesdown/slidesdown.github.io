@@ -2,7 +2,14 @@ import type { BaseDiagramConfig, QuadrantChartConfig } from '../../config.type.j
 import type { Point } from '../../types.js';
 export type TextVerticalPos = 'left' | 'center' | 'right';
 export type TextHorizontalPos = 'top' | 'middle' | 'bottom';
-export interface QuadrantPointInputType extends Point {
+export interface StylesObject {
+    className?: string;
+    radius?: number;
+    color?: string;
+    strokeColor?: string;
+    strokeWidth?: string;
+}
+export interface QuadrantPointInputType extends Point, StylesObject {
     text: string;
 }
 export interface QuadrantTextType extends Point {
@@ -13,7 +20,7 @@ export interface QuadrantTextType extends Point {
     fontSize: number;
     rotation: number;
 }
-export interface QuadrantPointType extends Point {
+export interface QuadrantPointType extends Point, Pick<StylesObject, 'strokeColor' | 'strokeWidth'> {
     fill: string;
     radius: number;
     text: QuadrantTextType;
@@ -98,6 +105,7 @@ export declare class QuadrantBuilder {
     private config;
     private themeConfig;
     private data;
+    private classes;
     constructor();
     getDefaultData(): QuadrantBuilderData;
     getDefaultConfig(): QuadrantBuilderConfig;
@@ -105,6 +113,7 @@ export declare class QuadrantBuilder {
     clear(): void;
     setData(data: Partial<QuadrantBuilderData>): void;
     addPoints(points: QuadrantPointInputType[]): void;
+    addClass(className: string, styles: StylesObject): void;
     setConfig(config: Partial<QuadrantBuilderConfig>): void;
     setThemeConfig(themeConfig: Partial<QuadrantBuilderThemeConfig>): void;
     calculateSpace(xAxisPosition: typeof this.config.xAxisPosition, showXAxis: boolean, showYAxis: boolean, showTitle: boolean): CalculateSpaceData;

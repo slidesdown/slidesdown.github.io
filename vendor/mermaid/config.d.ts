@@ -53,7 +53,7 @@ export declare const setConfig: (conf: MermaidConfig) => MermaidConfig;
  * | --------- | ------------------------- | ----------- | ------------------------------ |
  * | getConfig | Obtains the currentConfig | Get Request | Any Values from current Config |
  *
- * **Notes**: Returns **any** the currentConfig
+ * **Notes**: Avoid calling this function repeatedly. Instead, store the result in a variable and use it, and pass it down to function calls.
  *
  * @returns The currentConfig
  */

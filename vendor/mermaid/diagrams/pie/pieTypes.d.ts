@@ -31,8 +31,8 @@ export interface PieStyleOptions {
     pieOuterStrokeColor: string;
     pieOpacity: string;
 }
-export type Sections = Record<string, number>;
-export interface D3Sections {
+export type Sections = Map<string, number>;
+export interface D3Section {
     label: string;
     value: number;
 }
@@ -45,9 +45,8 @@ export interface PieDB extends DiagramDB {
     getAccTitle: () => string;
     setAccDescription: (description: string) => void;
     getAccDescription: () => string;
-    addSection: (label: string, value: number) => void;
+    addSection: ({ label, value }: D3Section) => void;
     getSections: () => Sections;
-    cleanupValue: (value: string) => number;
     setShowData: (toggle: boolean) => void;
     getShowData: () => boolean;
 }

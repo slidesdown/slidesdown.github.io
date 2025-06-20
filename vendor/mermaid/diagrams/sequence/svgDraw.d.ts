@@ -9,7 +9,7 @@ export function drawText(elem: any, textData: any): any[];
 export function drawLabel(elem: any, txtObject: any): any;
 export function fixLifeLineHeights(diagram: any, actors: any, actorKeys: any, conf: any): void;
 export function drawActor(elem: any, actor: any, conf: any, isFooter: any): Promise<any>;
-export function drawBox(elem: any, box: any, conf: any): Promise<void>;
+export function drawBox(elem: any, box: any, conf: any): void;
 export function anchorElement(elem: any): any;
 export function drawActivation(elem: any, bounds: any, verticalPos: any, conf: any, actorActivations: any): void;
 export function drawLoop(elem: any, loopModel: any, labelText: any, conf: any): any;

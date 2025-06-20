@@ -22,7 +22,7 @@ export declare abstract class BaseAxis implements Axis {
     setAxisPosition(axisPosition: AxisPosition): void;
     abstract getScaleValue(value: number | string): number;
     abstract recalculateScale(): void;
-    abstract getTickValues(): Array<string | number>;
+    abstract getTickValues(): (string | number)[];
     getTickDistance(): number;
     getAxisOuterPadding(): number;
     private getLabelDimension;

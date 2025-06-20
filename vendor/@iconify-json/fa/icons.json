@@ -16,9 +16,13 @@
 		"samples": [
 			"wrench",
 			"bell-o",
-			"user-o"
+			"user-o",
+			"area-chart",
+			"play",
+			"css3"
 		],
 		"category": "Archive / Unmaintained",
+		"tags": [],
 		"palette": false
 	},
 	"lastModified": 1702311954,

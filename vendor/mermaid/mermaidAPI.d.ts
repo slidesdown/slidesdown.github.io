@@ -1,34 +1,18 @@
-import { Diagram } from './Diagram.js';
 import type { MermaidConfig } from './config.type.js';
 import type { DiagramMetadata, DiagramStyleClassDef } from './diagram-api/types.js';
-export interface ParseOptions {
-    suppressErrors?: boolean;
-}
-export type D3Element = any;
-export interface RenderResult {
-    /**
-     * The svg code for the rendered graph.
-     */
-    svg: string;
-    /**
-     * Bind function to be called after the svg has been inserted into the DOM.
-     * This is necessary for adding event listeners to the elements in the svg.
-     * ```js
-     * const { svg, bindFunctions } = mermaidAPI.render('id1', 'graph TD;A-->B');
-     * div.innerHTML = svg;
-     * bindFunctions?.(div); // To call bindFunctions only if it's present.
-     * ```
-     */
-    bindFunctions?: (element: Element) => void;
-}
+import { Diagram } from './Diagram.js';
+import type { D3Element, ParseOptions, ParseResult, RenderResult } from './types.js';
 /**
  * Parse the text and validate the syntax.
  * @param text - The mermaid diagram definition.
- * @param parseOptions - Options for parsing.
- * @returns true if the diagram is valid, false otherwise if parseOptions.suppressErrors is true.
- * @throws Error if the diagram is invalid and parseOptions.suppressErrors is false.
+ * @param parseOptions - Options for parsing. @see {@link ParseOptions}
+ * @returns An object with the `diagramType` set to type of the diagram if valid. Otherwise `false` if parseOptions.suppressErrors is `true`.
+ * @throws Error if the diagram is invalid and parseOptions.suppressErrors is false or not set.
  */
-declare function parse(text: string, parseOptions?: ParseOptions): Promise<boolean>;
+declare function parse(text: string, parseOptions: ParseOptions & {
+    suppressErrors: true;
+}): Promise<ParseResult | false>;
+declare function parse(text: string, parseOptions?: ParseOptions): Promise<ParseResult>;
 /**
  * Create a CSS style that starts with the given class name, then the element,
  * with an enclosing block that has each of the cssClasses followed by !important;
@@ -45,8 +29,8 @@ export declare const cssImportantStyles: (cssClass: string, element: string, css
  * @param  classDefs - the classDefs in the diagram text. Might be null if none were defined. Usually is the result of a call to getClasses(...)
  * @returns  the string with all the user styles
  */
-export declare const createCssStyles: (config: MermaidConfig, classDefs?: Record<string, DiagramStyleClassDef> | null | undefined) => string;
-export declare const createUserStyles: (config: MermaidConfig, graphType: string, classDefs: Record<string, DiagramStyleClassDef> | undefined, svgId: string) => string;
+export declare const createCssStyles: (config: MermaidConfig, classDefs?: Map<string, DiagramStyleClassDef> | null | undefined) => string;
+export declare const createUserStyles: (config: MermaidConfig, graphType: string, classDefs: Map<string, DiagramStyleClassDef> | undefined, svgId: string) => string;
 /**
  * Clean up svgCode. Do replacements needed
  *
@@ -62,7 +46,6 @@ export declare const cleanUpSvgCode: (svgCode: string | undefined, inSandboxMode
  * @param svgCode - the svg code to put inside the iFrame
  * @param svgElement - the d3 node that has the current svgElement so we can get the height from it
  * @returns  - the code with the iFrame that now contains the svgCode
- * TODO replace btoa(). Replace with  buf.toString('base64')?
  */
 export declare const putIntoIFrame: (svgCode?: string, svgElement?: D3Element) => string;
 /**
@@ -89,75 +72,16 @@ export declare const appendDivSvgG: (parentRoot: D3Element, id: string, enclosin
  */
 export declare const removeExistingElements: (doc: Document, id: string, divId: string, iFrameId: string) => void;
 /**
- * @param  options - Initial Mermaid options
+ * @param  userOptions - Initial Mermaid options
  */
-declare function initialize(options?: MermaidConfig): void;
+declare function initialize(userOptions?: MermaidConfig): void;
 /**
- * ## mermaidAPI configuration defaults
- *
- * ```ts
- *   const config = {
- *     theme: 'default',
- *     logLevel: 'fatal',
- *     securityLevel: 'strict',
- *     startOnLoad: true,
- *     arrowMarkerAbsolute: false,
- *
- *     er: {
- *       diagramPadding: 20,
- *       layoutDirection: 'TB',
- *       minEntityWidth: 100,
- *       minEntityHeight: 75,
- *       entityPadding: 15,
- *       stroke: 'gray',
- *       fill: 'honeydew',
- *       fontSize: 12,
- *       useMaxWidth: true,
- *     },
- *     flowchart: {
- *       diagramPadding: 8,
- *       htmlLabels: true,
- *       curve: 'basis',
- *     },
- *     sequence: {
- *       diagramMarginX: 50,
- *       diagramMarginY: 10,
- *       actorMargin: 50,
- *       width: 150,
- *       height: 65,
- *       boxMargin: 10,
- *       boxTextMargin: 5,
- *       noteMargin: 10,
- *       messageMargin: 35,
- *       messageAlign: 'center',
- *       mirrorActors: true,
- *       bottomMarginAdj: 1,
- *       useMaxWidth: true,
- *       rightAngles: false,
- *       showSequenceNumbers: false,
- *     },
- *     gantt: {
- *       titleTopMargin: 25,
- *       barHeight: 20,
- *       barGap: 4,
- *       topPadding: 50,
- *       leftPadding: 75,
- *       gridLineStartPadding: 35,
- *       fontSize: 11,
- *       fontFamily: '"Open Sans", sans-serif',
- *       numberSectionStyles: 4,
- *       axisFormat: '%Y-%m-%d',
- *       topAxis: false,
- *       displayMode: '',
- *     },
- *   };
- *   mermaid.initialize(config);
- * ```
+ * @internal - Use mermaid.function instead of mermaid.mermaidAPI.function
  */
 export declare const mermaidAPI: Readonly<{
     render: (id: string, text: string, svgContainingElement?: Element) => Promise<RenderResult>;
     parse: typeof parse;
-    getDiagramFromText: (text: string, metadata?: Pick<DiagramMetadata, 'title'>) => Promise<Diagram>;
+    getDiagramFromText: (text: string, metadata?: Pick<DiagramMetadata, "title">) => Promise<Diagram>;
     initialize: typeof initialize;
     getConfig: () => MermaidConfig;
     setConfig: (conf: MermaidConfig) => MermaidConfig;
