@@ -24,14 +24,14 @@ async function createChart(canvas, data) {
       const { default: ApexCharts } = await import("apexcharts");
       const _data = JSON.parse(data);
       const chart = new ApexCharts(canvas, _data);
-      canvas.innerHTML = ""; //  cleas inner elements since chart.render wont'd do it
+      canvas.innerHTML = ""; //  clears inner elements since chart.render won't do it
       return await chart.render();
     } catch (err) {
       console.error(err);
       canvas.textContent = err.toString();
     }
   } else {
-    const msg = `apexcharts: data missing found for chart`;
+    const msg = `apexchart: data missing found for chart`;
     console.warn(msg);
     canvas.textContent = msg;
   }
