@@ -43,31 +43,11 @@ const SANITIZE = (string) =>
       ADD_TAGS: [
         "#comment", // comments are vital for configuring revealjs
         "foreignObject", // unfortunately some mermaid diagrams use it, despite being a potential security risk: https://github.com/cure53/DOMPurify/issues/469
+        "iframe", // allow iframes
       ],
       ADD_ATTR: [
         "target",
       ],
-      CUSTOM_ELEMENT_HANDLING: {
-        tagNameCheck: (tagName) =>
-          [
-            "fa-i",
-            "flex-box",
-            "v-box",
-            "h-box",
-            "grid-box",
-            "columns-2",
-            "columns-3",
-            "columns-4",
-            "columns-5",
-            "columns-6",
-          ].includes(tagName),
-        attributeNameCheck: (name) =>
-          [
-            "class",
-            "style",
-            "styles",
-          ].includes(name),
-      },
     },
   );
 
