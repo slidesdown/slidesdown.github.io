@@ -66,13 +66,16 @@ function addAttributeInElement(node, elementTarget, separator) {
   const attrsInNode = new RegExp(separator, "gm");
   const attrsRegex = new RegExp(
     // attributes are limited to prevent code injection
-    "(?:^|\s)(?<attr>class|style|data-[a-z-]+)=(?:\"(?<dval>[^\"]+?)\"|'(?<sval>[^']+?)')",
+    /(?:^|\s+)(?<attr>class|style|data-[a-z-]+)=(?:"(?<dval>[^"]+?)"|'(?<sval>[^']+?)')/,
     "gm",
   );
   let matches,
     matchesAttrs;
   if ((matches = attrsInNode.exec(node.nodeValue)) !== null) {
     const attrs = matches[1];
+    // remove match from comment node to avoid further processing
+    node.nodeValue = node.nodeValue.substring(0, matches.index) +
+      node.nodeValue.substring(attrsInNode.lastIndex);
     while ((matchesAttrs = attrsRegex.exec(attrs)) !== null) {
       elementTarget.setAttribute(
         matchesAttrs.groups.attr,
@@ -134,14 +137,19 @@ function addAttributes(
     }
   }
   if (element.nodeType == Node.COMMENT_NODE) {
+    let attrs_added = false;
+    // Avoid adding attributes to the section if separatorElementAttributes is used
     if (previousElement !== section) {
-      addAttributeInElement(
+      attrs_added = addAttributeInElement(
         element,
         previousElement,
         separatorElementAttributes,
       );
     }
-    addAttributeInElement(element, section, separatorSectionAttributes);
+    // Speed optimization: only add attributes if they haven't been added before
+    if (!attrs_added) {
+      addAttributeInElement(element, section, separatorSectionAttributes);
+    }
   }
 }
 
@@ -159,6 +167,69 @@ function addSlidifyDefaultOptions(options) {
   return options;
 }
 
+const IS_URL = /^https?:\/\//;
+const IS_ABSOLUTE = /^\//;
+const IS_LOCAL = /^#/;
+const IS_RELATIVE = /^(\.\.\/|\.\/)/;
+
+/**
+ * Takes an HTML marked token and converts relative URLs in img, a and comment elements into absolute URLs.
+ */
+function rebasePathIfNeeded(base_url, token) {
+  let text = [];
+  let last_index = 0;
+  let remainder = "";
+  const a_href_regex =
+    /((<a[^>]* href=")([^"]*)("[^>]*>)|(<a[^>]* href=')([^']*)('[^>]*>))/gi;
+  const img_src_regex =
+    /((<img[^>]* src=")([^"]*)("[^>]*>)|(<img[^>]* src=')([^']*)('[^>]*>))/gi;
+  const img_data_preview_image_regex =
+    /((<img[^>]* data-preview-image=")([^"]*)("[^>]*>)|(<img[^>]* data-preview-image=')([^']*)('[^>]*>))/gi;
+  const data_background_image_regex =
+    /((\sdata-background-image=")([^"]*)(")|(\sdata-background-image=')([^']*)('))/gi;
+  // data-background-image
+  for (
+    const regex of [
+      a_href_regex,
+      img_src_regex,
+      img_data_preview_image_regex,
+      data_background_image_regex,
+    ]
+  ) {
+    for (const match of token.text.matchAll(regex)) {
+      // offset to select between single or double qoutes path in regex
+      const matchOffset = match[2] ? 0 : 3;
+      text.push(token.text.substring(last_index, match.index));
+      const ref = match[3 + matchOffset];
+      const needsRebase =
+        !(IS_URL.test(ref) || IS_ABSOLUTE.test(ref) || IS_LOCAL.test(ref));
+      // const needsRebase = isRelative.test(ref);
+      let rebasing = "";
+      let path_url = "";
+      if (needsRebase) {
+        rebasing = base_url;
+      }
+      if (needsRebase) {
+        // Normalize URL if it needs rebasing
+        path_url = new URL(`${rebasing}${match[3 + matchOffset]}`).toString();
+      } else {
+        path_url = `${rebasing}${match[3 + matchOffset]}`;
+      }
+      text.push(
+        `${match[2 + matchOffset]}${path_url}${match[4 + matchOffset]}`,
+      );
+      last_index = match.index + match[0].length;
+    }
+    if (text.length) {
+      remainder = token.text.substring(last_index, token.text.length);
+      token.text = text.join("") + remainder;
+    }
+    text = [];
+    last_index = 0;
+  }
+  return { text, last_index, remainder };
+}
+
 export function buildMarkedConfiguration(markedOptions) {
   // Marked options: https://marked.js.org/using_advanced#options
   // baseUrl for html elements a and img
@@ -174,15 +245,6 @@ export function buildMarkedConfiguration(markedOptions) {
   marked.use(gfmHeadingId());
   markedOptions.async = true;
   markedOptions.useNewRenderer = true;
-  const a_href_regex =
-    /((<a[^>]*? href=")([^"]*?)("[^>]*?>)|(<a[^>]*? href=')([^']+?)('[^>]*?>))/gi;
-  // TODO: apply img src also to data-preview-image
-  const img_src_regex =
-    /((<img[^>]*? src=")([^"]*?)("[^>]*?>)|(<img[^>]*? src=')([^']+?)('[^>]*?>))/gi;
-  const isUrl = /^https?:\/\//;
-  const isAbsolute = /^\//;
-  const isLocal = /^#/;
-  const isRelative = /^(\.\.\/|\.\/)/;
   const markedConfig = {
     ...markedOptions,
     renderer: {
@@ -192,58 +254,10 @@ export function buildMarkedConfiguration(markedOptions) {
     },
     walkTokens: (token) => {
       if (token.type === "html") {
-        let text = [];
-        let last_index = 0;
-        let remainder = "";
-        for (const match of token.text.matchAll(img_src_regex)) {
-          const matchOffset = match[2] ? 0 : 3;
-          text.push(token.text.substring(last_index, match.index));
-          const ref = match[3 + matchOffset];
-          const needsRebase =
-            !(isUrl.test(ref) || isAbsolute.test(ref) || isLocal.test(ref));
-          // const needsRebase = isRelative.test(ref);
-          if (needsRebase) {
-            text.push(
-              `${match[2 + matchOffset]}${base_url}${match[3 + matchOffset]}${
-                match[4 + matchOffset]
-              }`,
-            );
-          } else {
-            text.push(
-              `${match[2 + matchOffset]}${match[3 + matchOffset]}${
-                match[4 + matchOffset]
-              }`,
-            );
-          }
-          last_index = match.index + match[0].length;
-        }
-        if (text.length) {
-          remainder = token.text.substring(last_index, token.text.length);
-          token.text = text.join("") + remainder;
-        }
-        text = [];
-        last_index = 0;
-        for (const match of token.text.matchAll(a_href_regex)) {
-          text.push(token.text.substring(last_index, match.index));
-          const matchOffset = match[2] ? 0 : 3;
-          const ref = match[3 + matchOffset];
-          // const needsRebase = !(isUrl.test(ref) || isAbsolute.test(ref) || isLocal.test(ref))
-          const needsRebase = isRelative.test(ref);
-          if (needsRebase) {
-            text.push(
-              `${match[2 + matchOffset]}${base_url}${match[3 + matchOffset]}${
-                match[4 + matchOffset]
-              }`,
-            );
-          } else {
-            text.push(
-              `${match[2 + matchOffset]}${match[3 + matchOffset]}${
-                match[4 + matchOffset]
-              }`,
-            );
-          }
-          last_index = match.index + match[0].length;
-        }
+        let { text, last_index, remainder } = rebasePathIfNeeded(
+          base_url,
+          token,
+        );
         if (text.length) {
           remainder = token.text.substring(last_index, token.text.length);
           token.text = text.join("") + remainder;
