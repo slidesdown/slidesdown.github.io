@@ -66,7 +66,7 @@ function addAttributeInElement(node, elementTarget, separator) {
   const attrsInNode = new RegExp(separator, "gm");
   const attrsRegex = new RegExp(
     // attributes are limited to prevent code injection
-    /(?:^|\s+)(?<attr>class|style|data-[a-z-]+)=(?:"(?<dval>[^"]+?)"|'(?<sval>[^']+?)')/,
+    /(?:^|\s+)(?<attr>un-cloak|class|style|data-[a-z-]+)=(?:"(?<dval>[^"]*)"|'(?<sval>[^']*)')/,
     "gm",
   );
   let matches,
@@ -167,7 +167,7 @@ function addSlidifyDefaultOptions(options) {
   return options;
 }
 
-const IS_URL = /^https?:\/\//;
+const IS_URL = /^[a-z]+:/;
 const IS_ABSOLUTE = /^\//;
 const IS_LOCAL = /^#/;
 const IS_RELATIVE = /^(\.\.\/|\.\/)/;

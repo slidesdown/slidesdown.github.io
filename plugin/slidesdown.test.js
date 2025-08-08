@@ -121,7 +121,7 @@ describe("Basic parsing", () => {
     expect(section.children[0].textContent).toBe("world");
   });
 
-  test("When a an element and slide comment, then it adds attributes to the respective HTML elements.", async () => {
+  test("When an element and slide comment, then it adds attributes to the respective HTML elements.", async () => {
     SECTION.setAttribute(
       "data-markdown-plain",
       [
@@ -129,7 +129,7 @@ describe("Basic parsing", () => {
         '<!-- .slide: class="test-slide" style="color: red;" data-visibility="hidden" -->',
         '<!-- .element:  style="color: green;" class="test-element" -->',
         "- list element",
-        '- list element 2 <!-- .element: class="test-li"  style="color: orange;"-->',
+        '- list element 2 <!-- .element: un-cloak="" class="test-li"  style="color: orange;"-->',
         '<!-- .element: class="test-ul"  style="color: blue;"-->',
       ].join("\n"),
     );
@@ -161,6 +161,7 @@ describe("Basic parsing", () => {
     expect(section.children[1].style.color).toBe("blue");
     expect(section.children[1].children.length).toBe(2);
     expect(section.children[1].children[1].getAttributeNames()).toEqual([
+      "un-cloak",
       "class",
       "style",
     ]);
@@ -558,6 +559,35 @@ describe("Relative URL rewriting", () => {
     expect(section.className).toBe("test");
     expect(section.getAttribute("data-background-image")).toBe(
       `${markedOptions.baseUrl}test.png`,
+    );
+  });
+
+  test("When a URL is to provided, it is never rebased", async () => {
+    SECTION.setAttribute(
+      "data-markdown-plain",
+      [
+        "# hello",
+        '<img src="https://test.example.com/test.png" />',
+        '<a href="https://test.example.com/test.png">link</a>',
+        '<a href="tel:0123458789">tel</a>',
+        '<a href="mailto:mail@example.com">mail</a>',
+      ].join("\n"),
+    );
+    const metadata = await preProcessSlides(DIV);
+    expect(metadata).toStrictEqual({});
+    await convertMarkdownToSlides(DIV, marked);
+    expect(DIV.children.length).toBe(1);
+    const section = DIV.children[0];
+    expect(section.children.length).toBe(5);
+    expect(section.children[1].getAttribute("src")).toBe(
+      "https://test.example.com/test.png",
+    );
+    expect(section.children[2].getAttribute("href")).toBe(
+      "https://test.example.com/test.png",
+    );
+    expect(section.children[3].getAttribute("href")).toBe("tel:0123458789");
+    expect(section.children[4].getAttribute("href")).toBe(
+      "mailto:mail@example.com",
     );
   });
 });
