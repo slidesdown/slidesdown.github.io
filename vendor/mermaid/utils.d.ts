@@ -267,6 +267,7 @@ declare const _default: {
     runFunc: (functionName: string, ...params: unknown[]) => void;
     entityDecode: (html: string) => string;
     insertTitle: (parent: D3Element, cssClass: string, titleTopMargin: number, title?: string) => void;
+    isLabelCoordinateInPath: typeof isLabelCoordinateInPath;
     parseFontSize: (fontSize: string | number | undefined) => [number?, string?];
     InitIDGenerator: typeof InitIDGenerator;
 };
@@ -295,3 +296,13 @@ export declare const getEdgeId: (from: string, to: string, { counter, prefix, su
  * (e.g. it removes the attribute).
  */
 export declare function handleUndefinedAttr(attrValue: Parameters<d3.Selection<BaseType, unknown, HTMLElement, any>['attr']>[1] | undefined): string | number | boolean | readonly (string | number)[] | import("d3-selection").ValueFn<BaseType, unknown, string | number | boolean | readonly (string | number)[] | null> | null;
+/**
+ * Checks if the  x or y coordinate of the edge label
+ * appears in the given SVG path data string.
+ *
+ * @param point  - The Point object with x and y properties to check.
+ * @param dAttr  - SVG path data string (the 'd' attribute of an SVG path element).
+ * @returns      - True if the rounded x or y coordinate of the edge label is found
+ *                 in the sanitized path data string; otherwise, false.
+ */
+export declare function isLabelCoordinateInPath(point: Point, dAttr: string): boolean;

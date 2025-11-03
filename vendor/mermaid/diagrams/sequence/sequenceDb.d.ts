@@ -43,6 +43,16 @@ declare const PLACEMENT: {
     readonly RIGHTOF: 1;
     readonly OVER: 2;
 };
+export declare const PARTICIPANT_TYPE: {
+    readonly ACTOR: "actor";
+    readonly BOUNDARY: "boundary";
+    readonly COLLECTIONS: "collections";
+    readonly CONTROL: "control";
+    readonly DATABASE: "database";
+    readonly ENTITY: "entity";
+    readonly PARTICIPANT: "participant";
+    readonly QUEUE: "queue";
+};
 export declare class SequenceDB implements DiagramDB {
     private readonly state;
     constructor();
@@ -55,7 +65,7 @@ export declare class SequenceDB implements DiagramDB {
         text: string;
         wrap?: boolean | null;
         type: string;
-    }, type: string): void;
+    }, type: string, metadata?: any): void;
     private activationCount;
     addMessage(idFrom: Message['from'], idTo: Message['to'], message: {
         text: string;

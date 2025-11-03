@@ -174,6 +174,7 @@ declare class _Renderer<ParserOutput = string, RendererOutput = string> {
 	code({ text, lang, escaped }: Tokens.Code): RendererOutput;
 	blockquote({ tokens }: Tokens.Blockquote): RendererOutput;
 	html({ text }: Tokens.HTML | Tokens.Tag): RendererOutput;
+	def(token: Tokens.Def): RendererOutput;
 	heading({ tokens, depth }: Tokens.Heading): RendererOutput;
 	hr(token: Tokens.Hr): RendererOutput;
 	list(token: Tokens.List): RendererOutput;
@@ -374,6 +375,7 @@ declare class _Hooks<ParserOutput = string, RendererOutput = string> {
 	block?: boolean;
 	constructor(options?: MarkedOptions<ParserOutput, RendererOutput>);
 	static passThroughHooks: Set<string>;
+	static passThroughHooksRespectAsync: Set<string>;
 	/**
 	 * Process markdown before marked
 	 */
@@ -386,6 +388,10 @@ declare class _Hooks<ParserOutput = string, RendererOutput = string> {
 	 * Process all tokens before walk tokens
 	 */
 	processAllTokens(tokens: Token[] | TokensList): Token[] | TokensList;
+	/**
+	 * Mask contents that should not be interpreted as em/strong delimiters
+	 */
+	emStrongMask(src: string): string;
 	/**
 	 * Provide function to tokenize markdown
 	 */
@@ -450,6 +456,7 @@ export interface MarkedExtension<ParserOutput = string, RendererOutput = string>
 	 * preprocess is called to process markdown before sending it to marked.
 	 * processAllTokens is called with the TokensList before walkTokens.
 	 * postprocess is called to process html after marked has finished parsing.
+	 * emStrongMask is called to mask contents that should not be interpreted as em/strong delimiters.
 	 * provideLexer is called to provide a function to tokenize markdown.
 	 * provideParser is called to provide a function to parse tokens.
 	 */
@@ -647,6 +654,7 @@ export declare class Marked<ParserOutput = string, RendererOutput = string> {
 	Hooks: {
 		new (options?: MarkedOptions<ParserOutput, RendererOutput> | undefined): _Hooks<ParserOutput, RendererOutput>;
 		passThroughHooks: Set<string>;
+		passThroughHooksRespectAsync: Set<string>;
 	};
 	constructor(...args: MarkedExtension<ParserOutput, RendererOutput>[]);
 	/**

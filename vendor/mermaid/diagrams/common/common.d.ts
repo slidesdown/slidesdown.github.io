@@ -100,7 +100,7 @@ export declare const calculateMathMLDimensions: (text: string, config: MermaidCo
  * @param config - Configuration for Mermaid
  * @returns String containing MathML if KaTeX is supported, or an error message if it is not and stylesheets aren't present
  */
-export declare const renderKatex: (text: string, config: MermaidConfig) => Promise<string>;
+export declare const renderKatexSanitized: (text: string, config: MermaidConfig) => Promise<string>;
 declare const _default: {
     getRows: (s?: string) => string[];
     sanitizeText: (text: string, config: MermaidConfig) => string;

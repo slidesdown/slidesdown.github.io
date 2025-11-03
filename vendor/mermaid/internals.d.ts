@@ -20,7 +20,7 @@ export declare const internalHelpers: {
     };
     getConfig: () => import("./config.type.js").MermaidConfig;
     insertCluster: (elem: any, node: import("./rendering-util/types.js").ClusterNode) => Promise<any>;
-    insertEdge: (elem: any, edge: any, clusterDb: any, diagramType: any, startNode: any, endNode: any, id: any) => {
+    insertEdge: (elem: any, edge: any, clusterDb: any, diagramType: any, startNode: any, endNode: any, id: any, skipIntersect?: boolean) => {
         updatedPath: any;
         originalPath: any;
     };
