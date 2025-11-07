@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="generator" content="slidesdown 1.2.11" />
+    <meta name="generator" content="slidesdown 1.2.12" />
     <link href="https://slidesdown.github.io" rel="canonical" />
     <meta content="Slidesdown" property="og:title" />
     <meta content="Presentations at the speed of Markdown" name="description" />
@@ -110,27 +110,33 @@
     <script src="/vendor/unocss/preset-attributify.global.js"></script>
     <script src="/vendor/unocss/preset-icons.global.js"></script>
     <script src="/vendor/unocss/preset-typography.global.js"></script>
-    <script src="/vendor/unocss/preset-uno.global.js"></script>
     <script src="/vendor/unocss/preset-wind4.global.js"></script>
     <script src="/vendor/unocss/preset-web-fonts.global.js"></script>
     <script>
       // Documentation: https://unocss.dev/integrations/runtime#usage
       window.__unocss = {
         presets: [
-          () => window.__unocss_runtime.presets.presetWind4(),
+          () =>
+            window.__unocss_runtime.presets.presetWind4({
+              preflights: { reset: false },
+            }),
           () => window.__unocss_runtime.presets.presetAttributify(),
           () =>
             window.__unocss_runtime.presets.presetIcons({
               scale: 1.2,
               cdn: "/vendor/",
+              extraProperties: {
+                "display": "inline-block",
+                "vertical-align": "middle",
+              },
             }),
           () => window.__unocss_runtime.presets.presetTypography(),
-          () => window.__unocss_runtime.presets.presetUno(),
           () => window.__unocss_runtime.presets.presetWebFonts(),
         ],
       };
     </script>
-    <script src="/vendor/unocss/core.global.js"></script>
+    <!-- UnoCSS is loaded by slidesdown.js to avoid a double-initialization -->
+    <!-- <script src="/vendor/unocss/core.global.js"></script> -->
     <script
       async
       src="https://scripts.simpleanalyticscdn.com/latest.js"
