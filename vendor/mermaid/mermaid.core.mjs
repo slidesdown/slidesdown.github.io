@@ -1,6 +1,6 @@
 import {
   package_default
-} from "./chunks/mermaid.core/chunk-6MN3ZHY7.mjs";
+} from "./chunks/mermaid.core/chunk-DR5Q36YT.mjs";
 import {
   selectSvgElement
 } from "./chunks/mermaid.core/chunk-EXTU4WIE.mjs";
@@ -142,7 +142,7 @@ var detector5 = /* @__PURE__ */ __name((txt) => {
   return /^\s*gitGraph/.test(txt);
 }, "detector");
 var loader5 = /* @__PURE__ */ __name(async () => {
-  const { diagram: diagram2 } = await import("./chunks/mermaid.core/gitGraphDiagram-NY62KEGX.mjs");
+  const { diagram: diagram2 } = await import("./chunks/mermaid.core/gitGraphDiagram-V2S2FVAM.mjs");
   return { id: id5, diagram: diagram2 };
 }, "loader");
 var plugin5 = {
@@ -158,7 +158,7 @@ var detector6 = /* @__PURE__ */ __name((txt) => {
   return /^\s*gantt/.test(txt);
 }, "detector");
 var loader6 = /* @__PURE__ */ __name(async () => {
-  const { diagram: diagram2 } = await import("./chunks/mermaid.core/ganttDiagram-LVOFAZNH.mjs");
+  const { diagram: diagram2 } = await import("./chunks/mermaid.core/ganttDiagram-JELNMOA3.mjs");
   return { id: id6, diagram: diagram2 };
 }, "loader");
 var plugin6 = {
@@ -174,7 +174,7 @@ var detector7 = /* @__PURE__ */ __name((txt) => {
   return /^\s*info/.test(txt);
 }, "detector");
 var loader7 = /* @__PURE__ */ __name(async () => {
-  const { diagram: diagram2 } = await import("./chunks/mermaid.core/infoDiagram-ER5ION4S.mjs");
+  const { diagram: diagram2 } = await import("./chunks/mermaid.core/infoDiagram-HS3SLOUP.mjs");
   return { id: id7, diagram: diagram2 };
 }, "loader");
 var info = {
