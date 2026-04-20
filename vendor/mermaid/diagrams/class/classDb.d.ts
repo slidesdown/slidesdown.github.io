@@ -1,4 +1,4 @@
-import type { ClassRelation, ClassNode, ClassNote, ClassMap, NamespaceMap, NamespaceNode } from './classTypes.js';
+import type { ClassRelation, ClassNode, ClassNote, ClassNoteMap, ClassMap, NamespaceMap, NamespaceNode } from './classTypes.js';
 import type { Node, Edge } from '../../rendering-util/types.js';
 import type { DiagramDB } from '../../diagram-api/types.js';
 export declare class ClassDB implements DiagramDB {
@@ -9,6 +9,7 @@ export declare class ClassDB implements DiagramDB {
     private interfaces;
     private namespaces;
     private namespaceCounter;
+    private diagramId;
     private functions;
     constructor();
     private splitClassNameAndType;
@@ -22,7 +23,13 @@ export declare class ClassDB implements DiagramDB {
     addClass(_id: string): void;
     private addInterface;
     /**
+     * Sets the diagram's SVG element ID, used to prefix domIds for uniqueness
+     * across multiple diagrams on the same page.
+     */
+    setDiagramId(svgElementId: string): void;
+    /**
      * Function to lookup domId from id in the graph definition.
+     * When diagramId is set, returns the prefixed version for DOM uniqueness.
      *
      * @param id - class ID to lookup
      * @public
@@ -32,7 +39,8 @@ export declare class ClassDB implements DiagramDB {
     getClass(id: string): ClassNode;
     getClasses(): ClassMap;
     getRelations(): ClassRelation[];
-    getNotes(): ClassNote[];
+    getNote(id: string | number): ClassNote;
+    getNotes(): ClassNoteMap;
     addRelation(classRelation: ClassRelation): void;
     /**
      * Adds an annotation to the specified class Annotations mark special properties of the given type
@@ -54,7 +62,7 @@ export declare class ClassDB implements DiagramDB {
      */
     addMember(className: string, member: string): void;
     addMembers(className: string, members: string[]): void;
-    addNote(text: string, className: string): void;
+    addNote(text: string, className: string): string;
     cleanupLabel(label: string): string;
     /**
      * Called by parser when assigning cssClass to a class
@@ -101,6 +109,7 @@ export declare class ClassDB implements DiagramDB {
         DEPENDENCY: number;
         LOLLIPOP: number;
     };
+    private escapeHtml;
     private readonly setupToolTips;
     private direction;
     getDirection(): string;
@@ -119,9 +128,10 @@ export declare class ClassDB implements DiagramDB {
      *
      * @param id - ID of the namespace to add
      * @param classNames - IDs of the class to add
+     * @param noteNames - IDs of the notes to add
      * @public
      */
-    addClassesToNamespace(id: string, classNames: string[]): void;
+    addClassesToNamespace(id: string, classNames: string[], noteNames: string[]): void;
     setCssStyle(id: string, styles: string[]): void;
     /**
      * Gets the arrow marker for a type index

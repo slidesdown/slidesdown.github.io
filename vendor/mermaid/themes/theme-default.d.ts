@@ -21,6 +21,8 @@ declare class Theme {
     fontSize: string;
     labelBackground: string;
     THEME_COLOR_LIMIT: number;
+    radius: number;
+    strokeWidth: number;
     nodeBkg: string;
     nodeBorder: string;
     clusterBkg: string;
@@ -64,6 +66,8 @@ declare class Theme {
     critBkgColor: string;
     todayLineColor: string;
     vertLineColor: string;
+    noteFontWeight: string;
+    fontWeight: string;
     personBorder: any;
     personBkg: string;
     archEdgeColor: string;
@@ -76,6 +80,10 @@ declare class Theme {
     labelColor: string;
     errorBkgColor: string;
     errorTextColor: string;
+    useGradient: boolean;
+    gradientStart: any;
+    gradientStop: any;
+    dropShadow: string;
     updateColors(): void;
     cScale0: any;
     cScale1: any;
@@ -135,6 +143,16 @@ declare class Theme {
     pieOuterStrokeWidth: any;
     pieOuterStrokeColor: any;
     pieOpacity: any;
+    venn1: any;
+    venn2: any;
+    venn3: any;
+    venn4: any;
+    venn5: any;
+    venn6: any;
+    venn7: any;
+    venn8: any;
+    vennTitleTextColor: any;
+    vennSetTextColor: any;
     quadrant1Fill: any;
     quadrant2Fill: any;
     quadrant3Fill: any;
