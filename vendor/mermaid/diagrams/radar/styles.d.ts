@@ -102,6 +102,8 @@ export declare const buildRadarStyleOptions: (radar?: RadarStyleOptions) => {
         scaleLabelColor: any;
         cScaleLabel0: any;
         cScaleLabel3: any;
+        flowContainerStroke: any;
+        rectBkgColor: any;
         transitionColor: any;
         transitionLabelColor: any;
         stateLabelColor: any;
@@ -155,6 +157,7 @@ export declare const buildRadarStyleOptions: (radar?: RadarStyleOptions) => {
         venn8: any;
         vennTitleTextColor: any;
         vennSetTextColor: any;
+        cynefin: any;
         quadrant1Fill: any;
         quadrant2Fill: any;
         quadrant3Fill: any;

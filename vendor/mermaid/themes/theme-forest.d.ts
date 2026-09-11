@@ -82,6 +82,7 @@ declare class Theme {
     gradientStop: any;
     dropShadow: string;
     updateColors(): void;
+    rectBkgColor: any;
     cScale0: any;
     cScale1: any;
     cScale2: any;
@@ -95,6 +96,7 @@ declare class Theme {
     cScale10: any;
     cScale11: any;
     scaleLabelColor: any;
+    flowContainerStroke: any;
     rowOdd: any;
     rowEven: any;
     transitionColor: any;
@@ -150,6 +152,7 @@ declare class Theme {
     venn8: any;
     vennTitleTextColor: any;
     vennSetTextColor: any;
+    cynefin: any;
     quadrant1Fill: any;
     quadrant2Fill: any;
     quadrant3Fill: any;

@@ -94,6 +94,11 @@ export declare namespace Tokens {
 		title?: string | null;
 		text: string;
 		tokens: Token[];
+		/**
+		 * Set for autolinks and extended (GFM) urls, where character references are
+		 * not resolved, so the destination and text are literal.
+		 */
+		autolink?: boolean;
 	}
 	interface List {
 		type: "list";
@@ -194,7 +199,7 @@ declare class _Renderer<ParserOutput = string, RendererOutput = string> {
 	codespan({ text }: Tokens.Codespan): RendererOutput;
 	br(token: Tokens.Br): RendererOutput;
 	del({ tokens }: Tokens.Del): RendererOutput;
-	link({ href, title, tokens }: Tokens.Link): RendererOutput;
+	link({ href, title, text, tokens, autolink }: Tokens.Link): RendererOutput;
 	image({ href, title, text, tokens }: Tokens.Image): RendererOutput;
 	text(token: Tokens.Text | Tokens.Escape): RendererOutput;
 }
@@ -247,6 +252,7 @@ declare const other: {
 	endingHash: RegExp;
 	startingSpaceChar: RegExp;
 	endingSpaceChar: RegExp;
+	endingSpaceTabChar: RegExp;
 	nonSpaceChar: RegExp;
 	newLineCharGlobal: RegExp;
 	tabCharGlobal: RegExp;
@@ -536,6 +542,8 @@ declare class _Lexer<ParserOutput = string, RendererOutput = string> {
 	state: {
 		inLink: boolean;
 		inRawBlock: boolean;
+		/** a link was produced in the inline run currently being scanned */
+		linkEmitted: boolean;
 		top: boolean;
 	};
 	inlineQueue: {
@@ -591,9 +599,9 @@ declare class _Lexer<ParserOutput = string, RendererOutput = string> {
 				text: RegExp;
 				url: RegExp;
 			};
-			gfm: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "autolink" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
-			breaks: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "autolink" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
-			pedantic: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "autolink" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
+			gfm: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
+			breaks: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
+			pedantic: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
 		};
 	};
 	/**
@@ -615,20 +623,26 @@ declare class _Lexer<ParserOutput = string, RendererOutput = string> {
 	blockTokens(src: string, tokens?: TokensList, lastParagraphClipped?: boolean): TokensList;
 	inline(src: string, tokens?: Token[]): Token[];
 	/**
+	 * Does this link text hold a link already? An image does not count: an image
+	 * may hold a link, a link may not.
+	 */
+	private linkInText;
+	/**
 	 * Lexing/Compiling
 	 */
 	inlineTokens(src: string, tokens?: Token[]): Token[];
 	private infiniteLoopError;
 }
-/**
- * Gets the original marked default options.
- */
-declare function _getDefaults<ParserOutput = string, RendererOutput = string>(): MarkedOptions<ParserOutput, RendererOutput>;
-declare let _defaults: MarkedOptions<any, any>;
 export type MaybePromise = void | Promise<void>;
 export declare class Marked<ParserOutput = string, RendererOutput = string> {
 	defaults: MarkedOptions<ParserOutput, RendererOutput>;
 	options: (opt: MarkedOptions<ParserOutput, RendererOutput>) => this;
+	/**
+	 * Compiles markdown to HTML.
+	 *
+	 * To configure hooks, a renderer, or a tokenizer, create a separate `Marked`
+	 * instance and use `Marked#use` instead of passing them on each call.
+	 */
 	parse: {
 		(src: string, options: MarkedOptions<ParserOutput, RendererOutput> & {
 			async: true;
@@ -638,6 +652,12 @@ export declare class Marked<ParserOutput = string, RendererOutput = string> {
 		}): ParserOutput;
 		(src: string, options?: MarkedOptions<ParserOutput, RendererOutput> | null): ParserOutput | Promise<ParserOutput>;
 	};
+	/**
+	 * Compiles inline markdown to HTML.
+	 *
+	 * To configure hooks, a renderer, or a tokenizer, create a separate `Marked`
+	 * instance and use `Marked#use` instead of passing them on each call.
+	 */
 	parseInline: {
 		(src: string, options: MarkedOptions<ParserOutput, RendererOutput> & {
 			async: true;
@@ -672,6 +692,15 @@ export declare class Marked<ParserOutput = string, RendererOutput = string> {
 	 * Run callback for every token
 	 */
 	walkTokens(tokens: Token[] | TokensList, callback: (token: Token) => MaybePromise | MaybePromise[]): MaybePromise[];
+	/**
+	 * Registers extensions with this Marked instance.
+	 *
+	 * The `renderer`, `tokenizer`, and `hooks` objects may each contain only the
+	 * methods that should be overridden. Their methods are merged with built-in
+	 * behavior and extensions registered by earlier calls.
+	 *
+	 * Use this method when supplying only some hook methods.
+	 */
 	use(...args: MarkedExtension<ParserOutput, RendererOutput>[]): this;
 	setOptions(opt: MarkedOptions<ParserOutput, RendererOutput>): this;
 	lexer(src: string, options?: MarkedOptions<ParserOutput, RendererOutput>): TokensList;
@@ -680,7 +709,16 @@ export declare class Marked<ParserOutput = string, RendererOutput = string> {
 	private onError;
 }
 /**
+ * Gets the original marked default options.
+ */
+declare function _getDefaults<ParserOutput = string, RendererOutput = string>(): MarkedOptions<ParserOutput, RendererOutput>;
+declare let _defaults: MarkedOptions<any, any>;
+declare const markedInstance: Marked<string, string>;
+/**
  * Compiles markdown to HTML asynchronously.
+ *
+ * To configure hooks, a renderer, or a tokenizer, create a `Marked` instance
+ * and use `Marked#use` instead of passing them as options on each call.
  *
  * @param src String of markdown source to be compiled
  * @param options Hash of options, having async: true
@@ -691,6 +729,9 @@ export declare function marked(src: string, options: MarkedOptions & {
 }): Promise<string>;
 /**
  * Compiles markdown to HTML.
+ *
+ * To configure hooks, a renderer, or a tokenizer, create a `Marked` instance
+ * and use `Marked#use` instead of passing them as options on each call.
  *
  * @param src String of markdown source to be compiled
  * @param options Optional hash of options
@@ -708,17 +749,7 @@ export declare namespace marked {
 	var setOptions: (options: MarkedOptions) => typeof marked;
 	var getDefaults: typeof _getDefaults;
 	var defaults: MarkedOptions<any, any>;
-	var use: (...args: MarkedExtension[]) => typeof marked;
 	var walkTokens: (tokens: Token[] | TokensList, callback: (token: Token) => MaybePromise | MaybePromise[]) => MaybePromise[];
-	var parseInline: {
-		(src: string, options: MarkedOptions<string, string> & {
-			async: true;
-		}): Promise<string>;
-		(src: string, options: MarkedOptions<string, string> & {
-			async: false;
-		}): string;
-		(src: string, options?: MarkedOptions<string, string> | null | undefined): string | Promise<string>;
-	};
 	var Parser: typeof _Parser;
 	var parser: typeof _Parser.parse;
 	var Renderer: typeof _Renderer;
@@ -729,10 +760,47 @@ export declare namespace marked {
 	var Hooks: typeof _Hooks;
 	var parse: typeof marked;
 }
+export declare namespace marked {
+	/**
+	 * Compiles inline markdown to HTML.
+	 *
+	 * To configure hooks, a renderer, or a tokenizer, create a `Marked` instance
+	 * and use `Marked#use` instead of passing them as options on each call.
+	 */
+	let parseInline: typeof markedInstance.parseInline;
+	/**
+	 * Registers extensions with the default Marked instance.
+	 *
+	 * The `renderer`, `tokenizer`, and `hooks` objects may each contain only the
+	 * methods that should be overridden. Their methods are merged with built-in
+	 * behavior and extensions registered by earlier calls.
+	 *
+	 * Use this function when supplying only some hook methods.
+	 */
+	let use: (...args: MarkedExtension[]) => typeof marked;
+}
+/**
+ * Registers extensions with the default Marked instance.
+ *
+ * The `renderer`, `tokenizer`, and `hooks` objects may each contain only the
+ * methods that should be overridden. Their methods are merged with built-in
+ * behavior and extensions registered by earlier calls.
+ *
+ * Use this function when supplying only some hook methods.
+ *
+ * @param args Extensions to register
+ * @return The `marked` function
+ */
+declare function useExtension(...args: MarkedExtension[]): typeof marked;
 export declare const options: (options: MarkedOptions) => typeof marked;
 export declare const setOptions: (options: MarkedOptions) => typeof marked;
-export declare const use: (...args: MarkedExtension[]) => typeof marked;
 export declare const walkTokens: (tokens: Token[] | TokensList, callback: (token: Token) => MaybePromise | MaybePromise[]) => MaybePromise[];
+/**
+ * Compiles inline markdown to HTML.
+ *
+ * To configure hooks, a renderer, or a tokenizer, create a `Marked` instance
+ * and use `Marked#use` instead of passing them as options on each call.
+ */
 export declare const parseInline: {
 	(src: string, options: MarkedOptions<string, string> & {
 		async: true;
@@ -755,6 +823,7 @@ export {
 	_Tokenizer as Tokenizer,
 	_defaults as defaults,
 	_getDefaults as getDefaults,
+	useExtension as use,
 };
 
 export {};

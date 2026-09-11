@@ -14,6 +14,8 @@ interface BaseNode {
     id: string;
     label?: string;
     description?: string[];
+    /** Stereotype line rendered between label and description in multi-section labels, e.g. `[Container: Node.js]`. */
+    stereotype?: string;
     parentId?: string;
     position?: string;
     cssStyles?: string[];
@@ -31,6 +33,21 @@ interface BaseNode {
     isGroup?: boolean;
     width?: number;
     height?: number;
+    wrappingWidth?: number;
+    /** Minimum width of the label area; short labels are widened to it (see `minNodeWidth`). */
+    minWidth?: number;
+    /**
+     * Spread the points where edges attach to this node across its side, so end
+     * markers on neighbouring edges overlap as little as the side allows.
+     * Honoured by layouts that place attachment points themselves (ELK).
+     */
+    spreadPorts?: boolean;
+    labelBBox?: {
+        width: number;
+        height: number;
+    };
+    /** Optional rendered title/header region for group-like containers. */
+    groupTitleRect?: GroupTitleRect;
     intersect?: (point: any) => any;
     calcIntersect?: (bounds: Bounds, point: Point) => any;
     rx?: number;
@@ -55,6 +72,9 @@ interface BaseNode {
     defaultWidth?: number;
     imageAspectRatio?: number;
     constraint?: 'on' | 'off';
+    metadata?: Record<string, unknown>;
+    layer?: number;
+    order?: number;
     children?: NodeChildren;
     nodeId?: string;
     level?: number;
@@ -69,13 +89,27 @@ interface BaseNode {
  * Group/cluster nodes, e.g. nodes that contain other nodes.
  */
 export type NodeChildren = Node[];
+export interface GroupTitleRect {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+}
 export interface ClusterNode extends BaseNode {
     shape?: ClusterShapeID;
     isGroup: true;
+    isEdgeLabel?: boolean;
+    edgeStart?: string;
+    edgeEnd?: string;
+    isDummy?: boolean;
 }
 export interface NonClusterNode extends BaseNode {
     shape?: ShapeID;
     isGroup: false;
+    isEdgeLabel?: boolean;
+    edgeStart?: string;
+    edgeEnd?: string;
+    isDummy?: boolean;
 }
 export type Node = ClusterNode | NonClusterNode;
 export interface Edge {
@@ -85,6 +119,8 @@ export interface Edge {
     style?: string[];
     animate?: boolean;
     animation?: 'fast' | 'slow';
+    /** Domain metadata carried from the parser (e.g. agentflow edge `instruction`). */
+    metadata?: Record<string, unknown>;
     arrowhead?: string;
     arrowheadStyle?: string;
     arrowTypeEnd?: string;
@@ -109,12 +145,31 @@ export interface Edge {
     thickness?: 'normal' | 'thick' | 'invisible' | 'dotted';
     look?: string;
     isUserDefinedId?: boolean;
+    showPoints?: boolean;
+    width?: number;
+    height?: number;
+    x?: number;
+    y?: number;
     points?: Point[];
     parentId?: string;
     dir?: string;
     source?: string;
     target?: string;
     depth?: number;
+    isLabelEdge?: boolean;
+    /**
+     * Label-as-waypoint marker: when set, the edge's polyline is routed through
+     * the center of the label node with this id. Used by the swimlane router to
+     * thread an original labelled edge through its `edge-label-*` node without
+     * splitting the edge into two rendered sub-edges.
+     */
+    labelNodeId?: string;
+    /**
+     * Layout-only virtual edge: exists solely to feed Sugiyama layering /
+     * ordering (e.g. A→label, label→B for swimlane label placement). Consumers
+     * that route or render edges must skip any edge with `isLayoutOnly: true`.
+     */
+    isLayoutOnly?: boolean;
 }
 export interface RectOptions {
     rx: number;

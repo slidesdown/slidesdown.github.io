@@ -87,6 +87,8 @@ declare class Theme {
     noteFontWeight: string;
     fontWeight: string;
     updateColors(): void;
+    flowContainerStroke: any;
+    rectBkgColor: any;
     transitionColor: any;
     transitionLabelColor: any;
     stateLabelColor: any;
@@ -133,6 +135,7 @@ declare class Theme {
     pieOpacity: any;
     vennTitleTextColor: any;
     vennSetTextColor: any;
+    cynefin: any;
     quadrant1Fill: any;
     quadrant2Fill: any;
     quadrant3Fill: any;

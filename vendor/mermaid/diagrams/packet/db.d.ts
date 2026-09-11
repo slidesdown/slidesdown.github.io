@@ -11,6 +11,9 @@ export declare class PacketDB implements DiagramDB {
         paddingY: number;
         useWidth: number;
         useMaxWidth: boolean;
+        theme: "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "redux" | "redux-dark" | "redux-color" | "redux-dark-color" | "null";
+        look: "classic" | "handDrawn" | "neo";
+        layout: string;
     };
     getPacket(): PacketWord[];
     pushWord(word: PacketWord): void;

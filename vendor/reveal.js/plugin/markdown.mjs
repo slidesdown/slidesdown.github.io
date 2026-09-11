@@ -1599,8 +1599,8 @@ var Ke = "\r?\n---\r?\n", qe = null, Je = "^s*notes?:", Ye = "\\.element\\s*?(.+
 			}
 		}
 		if (t.nodeType === Node.COMMENT_NODE) {
-			let a = n;
-			a && (a.tagName === "UL" || a.tagName === "OL") && (a = a.lastElementChild || a), l(t, a, r) === !1 && l(t, e, i);
+			let a = n, o = /\n[ \t]*\n/.test(t.previousSibling?.nodeValue || "");
+			a && (a.tagName === "UL" || a.tagName === "OL") && !o && (a = a.lastElementChild || a), l(t, a, r) === !1 && l(t, e, i);
 		}
 	}
 	function d() {
@@ -1628,7 +1628,7 @@ var Ke = "\r?\n---\r?\n", qe = null, Je = "^s*notes?:", Ye = "\\.element\\s*?(.+
 			} };
 			return i === !0 && !r && (c.listitem = function(e) {
 				return `<li class="fragment">${e.tokens ? this.parser.parseInline(e.tokens) : e.text || ""}</li>`;
-			}), t = new Y(), t.use({
+			}), t = new Y({ renderer: { space: ({ raw: e }) => e } }), t.use({
 				renderer: c,
 				...o
 			}), a && t.use(Ge()), s(e.getRevealElement()).then(d);

@@ -34,6 +34,7 @@ declare const _default: {
             defaultLinkColor: any;
             titleColor: any;
             edgeLabelBackground: any;
+            flowContainerStroke: any;
             nodeTextColor: any;
             actorBorder: any;
             actorBkg: any;
@@ -48,6 +49,7 @@ declare const _default: {
             activationBorderColor: any;
             activationBkgColor: any;
             sequenceNumberColor: any;
+            rectBkgColor: any;
             sectionBkgColor: any;
             altSectionBkgColor: any;
             sectionBkgColor2: any;
@@ -142,6 +144,7 @@ declare const _default: {
             venn8: any;
             vennTitleTextColor: any;
             vennSetTextColor: any;
+            cynefin: any;
             radar: any;
             wardleyEvolutionColor: any;
             wardley: any;
@@ -315,6 +318,8 @@ declare const _default: {
             noteFontWeight: string;
             fontWeight: string;
             updateColors(): void;
+            flowContainerStroke: any;
+            rectBkgColor: any;
             transitionColor: any;
             transitionLabelColor: any;
             stateLabelColor: any;
@@ -361,6 +366,7 @@ declare const _default: {
             pieOpacity: any;
             vennTitleTextColor: any;
             vennSetTextColor: any;
+            cynefin: any;
             quadrant1Fill: any;
             quadrant2Fill: any;
             quadrant3Fill: any;
@@ -548,6 +554,8 @@ declare const _default: {
             scaleLabelColor: any;
             cScaleLabel0: any;
             cScaleLabel3: any;
+            flowContainerStroke: any;
+            rectBkgColor: any;
             transitionColor: any;
             transitionLabelColor: any;
             stateLabelColor: any;
@@ -601,6 +609,7 @@ declare const _default: {
             venn8: any;
             vennTitleTextColor: any;
             vennSetTextColor: any;
+            cynefin: any;
             quadrant1Fill: any;
             quadrant2Fill: any;
             quadrant3Fill: any;
@@ -761,6 +770,7 @@ declare const _default: {
             gradientStop: any;
             dropShadow: string;
             updateColors(): void;
+            rectBkgColor: any;
             cScale0: any;
             cScale1: any;
             cScale2: any;
@@ -774,6 +784,7 @@ declare const _default: {
             cScale10: any;
             cScale11: any;
             scaleLabelColor: any;
+            flowContainerStroke: any;
             rowOdd: any;
             rowEven: any;
             transitionColor: any;
@@ -829,6 +840,7 @@ declare const _default: {
             venn8: any;
             vennTitleTextColor: any;
             vennSetTextColor: any;
+            cynefin: any;
             quadrant1Fill: any;
             quadrant2Fill: any;
             quadrant3Fill: any;
@@ -1004,6 +1016,7 @@ declare const _default: {
             gradientStop: any;
             dropShadow: string;
             updateColors(): void;
+            rectBkgColor: any;
             cScale0: any;
             cScale1: any;
             cScale2: any;
@@ -1019,6 +1032,7 @@ declare const _default: {
             scaleLabelColor: any;
             cScaleLabel0: any;
             cScaleLabel2: any;
+            flowContainerStroke: any;
             transitionColor: any;
             transitionLabelColor: any;
             stateLabelColor: any;
@@ -1053,6 +1067,7 @@ declare const _default: {
             pieOpacity: any;
             vennTitleTextColor: any;
             vennSetTextColor: any;
+            cynefin: any;
             quadrant1Fill: any;
             quadrant2Fill: any;
             quadrant3Fill: any;
@@ -1176,6 +1191,7 @@ declare const _default: {
             titleColor: any;
             edgeLabelBackground: any;
             nodeTextColor: any;
+            flowContainerStroke: any;
             actorBorder: any;
             actorBkg: any;
             actorTextColor: any;
@@ -1189,6 +1205,7 @@ declare const _default: {
             activationBorderColor: any;
             activationBkgColor: any;
             sequenceNumberColor: any;
+            rectBkgColor: any;
             sectionBkgColor: any;
             altSectionBkgColor: any;
             sectionBkgColor2: any;
@@ -1381,6 +1398,7 @@ declare const _default: {
             titleColor: any;
             edgeLabelBackground: any;
             nodeTextColor: any;
+            flowContainerStroke: any;
             actorBorder: any;
             actorBkg: any;
             actorTextColor: any;
@@ -1394,6 +1412,7 @@ declare const _default: {
             activationBorderColor: any;
             activationBkgColor: any;
             sequenceNumberColor: any;
+            rectBkgColor: any;
             sectionBkgColor: any;
             altSectionBkgColor: any;
             sectionBkgColor2: any;
@@ -1584,6 +1603,7 @@ declare const _default: {
             titleColor: any;
             edgeLabelBackground: any;
             nodeTextColor: any;
+            flowContainerStroke: any;
             noteFontWeight: number | undefined;
             actorBkg: any;
             actorTextColor: any;
@@ -1597,6 +1617,7 @@ declare const _default: {
             activationBorderColor: any;
             activationBkgColor: any;
             sequenceNumberColor: any;
+            rectBkgColor: any;
             sectionBkgColor: any;
             altSectionBkgColor: any;
             sectionBkgColor2: any;
@@ -1784,6 +1805,7 @@ declare const _default: {
             titleColor: any;
             edgeLabelBackground: any;
             nodeTextColor: any;
+            flowContainerStroke: any;
             actorBorder: any;
             signalColor: any;
             labelBoxBorderColor: any;
@@ -1797,6 +1819,7 @@ declare const _default: {
             activationBorderColor: any;
             activationBkgColor: any;
             sequenceNumberColor: any;
+            rectBkgColor: any;
             sectionBkgColor: any;
             altSectionBkgColor: any;
             sectionBkgColor2: any;
@@ -1965,6 +1988,8 @@ declare const _default: {
             dropShadow: string;
             nodeShadow: boolean;
             tertiaryColor: string;
+            clusterBkg: string;
+            clusterBorder: string;
             archEdgeColor: string;
             archEdgeArrowColor: string;
             archEdgeWidth: string;
@@ -1975,6 +2000,14 @@ declare const _default: {
             noteFontWeight: number;
             borderColorArray: string[];
             bkgColorArray: string[];
+            usecaseActorBorder: string;
+            usecaseActorBkg: string;
+            usecaseBorder: string;
+            usecaseBkg: string;
+            usecaseBoundaryBorder: string;
+            usecaseBoundaryBkg: string;
+            usecaseIncludeLine: string;
+            usecaseExtendLine: string;
             filterColor: string;
             updateColors(): void;
             primaryTextColor: any;
@@ -1988,12 +2021,11 @@ declare const _default: {
             textColor: any;
             border2: any;
             nodeBkg: any;
-            clusterBkg: any;
-            clusterBorder: any;
             defaultLinkColor: any;
             titleColor: any;
             edgeLabelBackground: any;
             nodeTextColor: any;
+            flowContainerStroke: any;
             actorBkg: any;
             actorTextColor: any;
             actorLineColor: any;
@@ -2006,9 +2038,7 @@ declare const _default: {
             activationBorderColor: any;
             activationBkgColor: any;
             sequenceNumberColor: any;
-            sectionBkgColor: any;
-            altSectionBkgColor: any;
-            sectionBkgColor2: any;
+            rectBkgColor: any;
             excludeBkgColor: any;
             taskBorderColor: any;
             taskBkgColor: any;
@@ -2031,6 +2061,7 @@ declare const _default: {
             transitionColor: any;
             transitionLabelColor: any;
             stateLabelColor: any;
+            stateEdgeLabelBackground: any;
             stateBkg: any;
             labelBackgroundColor: any;
             compositeBackground: any;
@@ -2053,28 +2084,11 @@ declare const _default: {
             cScale9: any;
             cScale10: any;
             cScale11: any;
+            sectionBkgColor: any;
+            sectionBkgColor2: any;
+            altSectionBkgColor: any;
             scaleLabelColor: any;
             classText: any;
-            fillType0: any;
-            fillType1: any;
-            fillType2: any;
-            fillType3: any;
-            fillType4: any;
-            fillType5: any;
-            fillType6: any;
-            fillType7: any;
-            pie1: any;
-            pie2: any;
-            pie3: any;
-            pie4: any;
-            pie5: any;
-            pie6: any;
-            pie7: any;
-            pie8: any;
-            pie9: any;
-            pie10: any;
-            pie11: any;
-            pie12: any;
             pieTitleTextSize: any;
             pieTitleTextColor: any;
             pieSectionTextSize: any;
@@ -2111,6 +2125,7 @@ declare const _default: {
             relationColor: any;
             relationLabelBackground: any;
             relationLabelColor: any;
+            requirementEdgeLabelBackground: string | undefined;
             git0: any;
             git1: any;
             git2: any;
@@ -2197,6 +2212,11 @@ declare const _default: {
             noteFontWeight: number;
             borderColorArray: string[];
             bkgColorArray: any[];
+            usecaseActorBorder: string;
+            usecaseBorder: string;
+            usecaseBoundaryBorder: string;
+            usecaseIncludeLine: string;
+            usecaseExtendLine: string;
             filterColor: string;
             updateColors(): void;
             lineColor: any;
@@ -2205,6 +2225,7 @@ declare const _default: {
             titleColor: any;
             edgeLabelBackground: any;
             nodeTextColor: any;
+            flowContainerStroke: any;
             actorBorder: any;
             signalColor: any;
             labelBoxBorderColor: any;
@@ -2218,10 +2239,8 @@ declare const _default: {
             activationBorderColor: any;
             activationBkgColor: any;
             sequenceNumberColor: any;
+            rectBkgColor: any;
             rootLabelColor: string | undefined;
-            sectionBkgColor: any;
-            altSectionBkgColor: any;
-            sectionBkgColor2: any;
             excludeBkgColor: any;
             taskBorderColor: any;
             taskBkgColor: any;
@@ -2244,6 +2263,7 @@ declare const _default: {
             transitionColor: any;
             transitionLabelColor: any;
             stateLabelColor: any;
+            stateEdgeLabelBackground: any;
             stateBkg: any;
             labelBackgroundColor: any;
             compositeBackground: any;
@@ -2266,28 +2286,11 @@ declare const _default: {
             cScale9: any;
             cScale10: any;
             cScale11: any;
+            sectionBkgColor: any;
+            sectionBkgColor2: any;
+            altSectionBkgColor: any;
             scaleLabelColor: any;
             classText: any;
-            fillType0: any;
-            fillType1: any;
-            fillType2: any;
-            fillType3: any;
-            fillType4: any;
-            fillType5: any;
-            fillType6: any;
-            fillType7: any;
-            pie1: any;
-            pie2: any;
-            pie3: any;
-            pie4: any;
-            pie5: any;
-            pie6: any;
-            pie7: any;
-            pie8: any;
-            pie9: any;
-            pie10: any;
-            pie11: any;
-            pie12: any;
             pieTitleTextSize: any;
             pieTitleTextColor: any;
             pieSectionTextSize: any;
@@ -2324,6 +2327,7 @@ declare const _default: {
             relationColor: any;
             relationLabelBackground: any;
             relationLabelColor: any;
+            requirementEdgeLabelBackground: string | undefined;
             git0: any;
             git1: any;
             git2: any;

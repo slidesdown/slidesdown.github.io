@@ -100,6 +100,8 @@ declare class Theme {
     scaleLabelColor: any;
     cScaleLabel0: any;
     cScaleLabel3: any;
+    flowContainerStroke: any;
+    rectBkgColor: any;
     transitionColor: any;
     transitionLabelColor: any;
     stateLabelColor: any;
@@ -153,6 +155,7 @@ declare class Theme {
     venn8: any;
     vennTitleTextColor: any;
     vennSetTextColor: any;
+    cynefin: any;
     quadrant1Fill: any;
     quadrant2Fill: any;
     quadrant3Fill: any;

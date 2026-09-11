@@ -89,6 +89,7 @@ declare class Theme {
     gradientStop: any;
     dropShadow: string;
     updateColors(): void;
+    rectBkgColor: any;
     cScale0: any;
     cScale1: any;
     cScale2: any;
@@ -104,6 +105,7 @@ declare class Theme {
     scaleLabelColor: any;
     cScaleLabel0: any;
     cScaleLabel2: any;
+    flowContainerStroke: any;
     transitionColor: any;
     transitionLabelColor: any;
     stateLabelColor: any;
@@ -138,6 +140,7 @@ declare class Theme {
     pieOpacity: any;
     vennTitleTextColor: any;
     vennSetTextColor: any;
+    cynefin: any;
     quadrant1Fill: any;
     quadrant2Fill: any;
     quadrant3Fill: any;

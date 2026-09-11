@@ -50,6 +50,7 @@ declare class Theme {
     titleColor: any;
     edgeLabelBackground: any;
     nodeTextColor: any;
+    flowContainerStroke: any;
     noteFontWeight: number | undefined;
     actorBkg: any;
     actorTextColor: any;
@@ -63,6 +64,7 @@ declare class Theme {
     activationBorderColor: any;
     activationBkgColor: any;
     sequenceNumberColor: any;
+    rectBkgColor: any;
     sectionBkgColor: any;
     altSectionBkgColor: any;
     sectionBkgColor2: any;

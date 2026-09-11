@@ -49,6 +49,7 @@ declare class Theme {
     titleColor: any;
     edgeLabelBackground: any;
     nodeTextColor: any;
+    flowContainerStroke: any;
     actorBorder: any;
     actorBkg: any;
     actorTextColor: any;
@@ -62,6 +63,7 @@ declare class Theme {
     activationBorderColor: any;
     activationBkgColor: any;
     sequenceNumberColor: any;
+    rectBkgColor: any;
     sectionBkgColor: any;
     altSectionBkgColor: any;
     sectionBkgColor2: any;

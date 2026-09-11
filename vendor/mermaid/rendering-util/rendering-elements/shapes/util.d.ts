@@ -1,5 +1,18 @@
 import type { Node } from '../../types.js';
 import type { D3Selection, Point } from '../../../types.js';
+/**
+ * Widens a measured label box to `minWidth`. `createText` already sizes HTML labels
+ * up in the DOM; this covers SVG text (which has no box to size) and keeps the
+ * geometry shapes derive from the box consistent with it.
+ *
+ * The two label kinds measure differently and shapes rely on the difference:
+ * an HTML label's `getBoundingClientRect()` is a DOMRect with `left`/`top`,
+ * while SVG text's `getBBox()` is an SVGRect without them, centred on x=0.
+ * Shapes place labels with `pos - (bbox.x - (bbox.left ?? 0))`, which cancels
+ * the centring for SVG text only because `left` is absent — so the widened box
+ * must keep the kind it was given, and SVG text stays centred as it grows.
+ */
+export declare const withMinWidth: (bbox: DOMRect, minWidth: number) => DOMRect;
 export declare const labelHelper: <T extends SVGGraphicsElement>(parent: D3Selection<T>, node: Node, _classes?: string) => Promise<{
     shapeSvg: import("d3-selection").Selection<SVGGElement, unknown, Element | null, unknown>;
     bbox: DOMRect;
@@ -21,7 +34,20 @@ export declare const insertLabel: <T extends SVGGraphicsElement>(parent: D3Selec
     halfPadding: number;
     label: import("d3-selection").Selection<SVGGElement, unknown, Element | null, unknown>;
 }>;
-export declare const updateNodeBounds: <T extends SVGGraphicsElement>(node: Node, element: D3Selection<SVGGElement> | D3Selection<T>) => void;
+export declare const updateNodeBounds: <T extends SVGGraphicsElement>(node: Node, element: D3Selection<SVGGElement> | D3Selection<T>, 
+/**
+ * Pre-computed geometry the caller already knows (e.g. an axis-aligned rect
+ * sized analytically from the label). When supplied, we skip `getBBox()` —
+ * reading it forces a synchronous reflow over the growing node tree, which is
+ * the dominant cost of the measure phase on large diagrams. Only pass this when
+ * the value is exactly equal to what `element.getBBox()` would return (so it is
+ * safe for plain rects, but not for hand-drawn/roughjs paths that overflow
+ * their nominal box).
+ */
+knownBounds?: {
+    width: number;
+    height: number;
+}) => void;
 /**
  * @param parent - Parent element to append the polygon to
  * @param w - Width of the polygon

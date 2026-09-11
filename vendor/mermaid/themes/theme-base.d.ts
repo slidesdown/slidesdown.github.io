@@ -38,6 +38,7 @@ declare class Theme {
     defaultLinkColor: any;
     titleColor: any;
     edgeLabelBackground: any;
+    flowContainerStroke: any;
     nodeTextColor: any;
     actorBorder: any;
     actorBkg: any;
@@ -52,6 +53,7 @@ declare class Theme {
     activationBorderColor: any;
     activationBkgColor: any;
     sequenceNumberColor: any;
+    rectBkgColor: any;
     sectionBkgColor: any;
     altSectionBkgColor: any;
     sectionBkgColor2: any;
@@ -146,6 +148,7 @@ declare class Theme {
     venn8: any;
     vennTitleTextColor: any;
     vennSetTextColor: any;
+    cynefin: any;
     radar: any;
     wardleyEvolutionColor: any;
     wardley: any;

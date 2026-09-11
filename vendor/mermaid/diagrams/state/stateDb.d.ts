@@ -87,6 +87,12 @@ export interface NodeData {
     position?: string;
     description?: string | string[];
     labelType?: string;
+    /** Palette slot for container shapes; see `nextColorSlot` in `dataFetcher.ts`. */
+    colorIndex?: number;
+    /** Width at which the label wraps; defaults from `state.wrappingWidth` in `getData`. */
+    wrappingWidth?: number;
+    /** Minimum width of the label area; defaults from `state.minNodeWidth` in `getData`. */
+    minWidth?: number;
 }
 export interface Edge {
     id: string;
@@ -103,6 +109,11 @@ export interface Edge {
     thickness: string;
     classes: string;
     look: MermaidConfig['look'];
+    /**
+     * Stroke pattern, read by `insertEdge`. The note edge is the only state edge that sets
+     * it; see the note-edge push in `dataFetcher.ts` for why the CSS class is not enough.
+     */
+    pattern?: 'solid' | 'dotted' | 'dashed';
 }
 export declare class StateDB {
     private version;
@@ -115,6 +126,7 @@ export declare class StateDB {
     private startEndCount;
     private dividerCnt;
     private links;
+    private funs;
     static readonly relationType: {
         readonly AGGREGATION: 0;
         readonly EXTENSION: 1;
@@ -203,6 +215,7 @@ export declare class StateDB {
      */
     addStyleClass(id: string, styleAttributes?: string): void;
     getClasses(): Map<string, StyleClass>;
+    private setupToolTips;
     /**
      * Add a (style) class or css class to a state with the given id.
      * If the state isn't already in the list of known states, add it.
@@ -230,6 +243,7 @@ export declare class StateDB {
      * @param cssClassName - CSS class name
      */
     setTextStyle(itemId: string, cssClassName: string): void;
+    bindFunctions(element: Element): void;
     /**
      * Finds the direction statement in the root document.
      * @returns the direction statement if present
