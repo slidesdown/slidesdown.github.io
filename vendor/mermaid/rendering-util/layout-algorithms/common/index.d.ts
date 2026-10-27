@@ -1,11 +1,19 @@
 import type { SVG } from '../../../diagram-api/types.js';
 import type { InternalHelpers } from '../../../internals.js';
 import type { D3Selection } from '../../../types.js';
+import utils from '../../../utils.js';
 import { createGraphWithElements } from '../../createGraph.js';
 import type { CreateGraphOptions } from '../../createGraph.js';
-import type { LayoutData, Edge } from '../../types.js';
+import type { LayoutData, Edge, TerminalLabelKey } from '../../types.js';
 import type { RenderOptions } from '../../render.js';
 export type CommonLayoutMeasure = Awaited<ReturnType<typeof createGraphWithElements>>;
+type RenderedEdge = Edge & {
+    x?: number;
+    y?: number;
+    startLabelLeft?: string;
+    endLabelRight?: string;
+};
+type EdgeRenderPath = Parameters<typeof utils.calcLabelPosition>[0];
 type ClusterDb = Map<string, {
     node?: LayoutData['nodes'][number];
 } & Record<string, unknown>>;
@@ -39,4 +47,9 @@ export declare function createCommonLayoutRenderer<CoreResult = unknown, Prepare
 export declare function clearLayoutRenderState(): void;
 export declare function defaultMeasureLayout(data4Layout: LayoutData, { element }: CommonLayoutRenderContext, options?: CreateGraphOptions): Promise<CommonLayoutMeasure>;
 export declare function paintLayoutData(data4Layout: LayoutData, context: CommonLayoutPaintContext<unknown, CommonLayoutMeasure>, options?: CommonLayoutPaintOptions): Promise<void>;
+/** Where to translate a terminal label's group: the layout's placement if it made one, else along the path. */
+export declare function terminalLabelTranslate(edge: RenderedEdge, key: TerminalLabelKey, path?: EdgeRenderPath): {
+    x?: number;
+    y?: number;
+};
 export {};

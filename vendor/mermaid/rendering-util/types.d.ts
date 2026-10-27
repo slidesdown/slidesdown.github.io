@@ -112,6 +112,11 @@ export interface NonClusterNode extends BaseNode {
     isDummy?: boolean;
 }
 export type Node = ClusterNode | NonClusterNode;
+export type TerminalLabelKey = 'startLeft' | 'startRight' | 'endLeft' | 'endRight';
+export interface TerminalLabelSize {
+    width: number;
+    height: number;
+}
 export interface Edge {
     id: string;
     label?: string;
@@ -137,6 +142,10 @@ export interface Edge {
     type?: string;
     startLabelRight?: string;
     endLabelLeft?: string;
+    /** Measured terminal labels, each centred on its label group's origin. */
+    terminalLabelSizes?: Partial<Record<TerminalLabelKey, TerminalLabelSize>>;
+    /** Terminal label centres placed by the layout; preferred over the along-the-path default. */
+    terminalLabelCenters?: Partial<Record<TerminalLabelKey, Point>>;
     curve?: string;
     labelpos?: string;
     labelStyle?: string[];

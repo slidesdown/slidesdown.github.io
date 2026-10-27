@@ -13,7 +13,9 @@ import type { D3Selection, Point } from '../../../types.js';
  * must keep the kind it was given, and SVG text stays centred as it grows.
  */
 export declare const withMinWidth: (bbox: DOMRect, minWidth: number) => DOMRect;
-export declare const labelHelper: <T extends SVGGraphicsElement>(parent: D3Selection<T>, node: Node, _classes?: string) => Promise<{
+export declare const labelHelper: <T extends SVGGraphicsElement>(parent: D3Selection<T>, node: Node, _classes?: string, { ignoreMinWidth }?: {
+    ignoreMinWidth?: boolean;
+}) => Promise<{
     shapeSvg: import("d3-selection").Selection<SVGGElement, unknown, Element | null, unknown>;
     bbox: DOMRect;
     halfPadding: number;

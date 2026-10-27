@@ -3,6 +3,7 @@ import type { LayoutData } from '../../types.js';
 import { type TreeData } from './find-common-ancestor.js';
 import { type P, type RectLike } from './geometry.js';
 type Node = LayoutData['nodes'][number];
+type Edge = LayoutData['edges'][number];
 interface LabelData {
     width: number;
     height: number;
@@ -200,6 +201,24 @@ export declare function resolveElkPreset(name: string | undefined): {
 export declare function collectDescendantIds(elkNode: any, into?: Set<string>): Set<string>;
 export declare function evenGroupFrames(elkNodes: any[], layoutState: ElkLayoutState, nodeById: Map<string, Node>, graph?: ElkLayoutResult): void;
 /**
+ * A run displaced by `straightenFront`, in both its original and its
+ * straightened position, so a label that was riding along it can be moved
+ * with it — see `applyElkEdgeLayout`'s use of `straightenEdgeTerminals`.
+ * Both a and b are given in the original (unreversed) coordinate frame,
+ * regardless of whether this run came from the front or back straightening
+ * pass.
+ */
+export interface StraightenedRun {
+    old: {
+        a: P;
+        b: P;
+    };
+    new: {
+        a: P;
+        b: P;
+    };
+}
+/**
  * Straighten the port-to-channel staircase at either end of a clipped route,
  * leaving both ports where they are.
  *
@@ -207,6 +226,70 @@ export declare function evenGroupFrames(elkNodes: any[], layoutState: ElkLayoutS
  * identity.
  */
 export declare function straightenTerminalJogs(points: P[]): P[];
+/**
+ * Project a label sitting on one of an edge's straightened runs onto that
+ * run's new position.
+ *
+ * Deliberately scoped to just the run(s) `straightenEdgeTerminals` actually
+ * moved, rather than searching the edge's whole route: an unrelated,
+ * unchanged segment elsewhere on the route (e.g. a return leg) can be nearer
+ * to the label's old position than the run that moved is, and snapping to it
+ * would put the label on the wrong part of the edge entirely. Nearness is
+ * judged on each run's ORIGINAL position — the same point along the run
+ * (by parameter, not by nearest-point-after-the-fact) is then read off its
+ * new position, since a run only ever moves perpendicular to itself.
+ */
+export declare function projectLabelOntoStraightenedRun(label: P, runs: StraightenedRun[]): P | null;
+/**
+ * Straighten the port-to-channel step on every edge that has one, but only
+ * where doing so does not buy a crossing or a label overlap.
+ *
+ * Runs once over the finished layout rather than per edge, because the decision
+ * needs the other edges: the step is removed by displacing one of this edge's
+ * runs onto the port's row, and that run can land in a lane something else
+ * already occupies. Trading a barely-visible step for a new crossing is a bad
+ * deal, so an edge that would cause one is left exactly as ELK routed it. So is
+ * one that would leave ELK's reserved label lane for a label over an edge (#8368).
+ *
+ * Returns, for each edge whose points changed, the run(s) that moved, so the
+ * caller can carry the edge's main label along with the specific run it sat
+ * on (see `projectLabelOntoStraightenedRun` and the call site in
+ * `applyElkEdgeLayout`) — the label's `x`/`y` is set from ELK's own layout
+ * before this runs, and does not move on its own when a run does.
+ */
+export declare function straightenEdgeTerminals(edges: Edge[]): {
+    edge: Edge;
+    runs: StraightenedRun[];
+}[];
+/**
+ * Push apart the labels of two opposite-direction edges between the same
+ * node pair when they'd otherwise overlap.
+ */
+export declare function separateOppositeEdgeLabels(edges: Edge[]): void;
+/**
+ * ELK can place the end label of an edge that crosses into another group
+ * across that group's frame (#8335). Slide such a label along its end segment,
+ * by the shortest distance, until it clears every frame — never off that segment.
+ */
+export declare function slideTerminalLabelsOffFrames(edges: Edge[], nodes: LayoutData['nodes']): void;
+/**
+ * ELK puts every end label on one fixed side of its edge, but a `…Right` label
+ * belongs on the right of the direction of travel and a `…Left` one on the left,
+ * which is where dagre puts them. Mirror a label that is on the wrong side
+ * across its end segment, which keeps its distance from the line and the
+ * marker — but only onto free space: ELK reserved room on its own side, and the
+ * mirrored spot can belong to an edge leaving a neighbouring port.
+ */
+export declare function putTerminalLabelsOnTheirSide(edges: Edge[], nodes: LayoutData['nodes']): void;
+/**
+ * ELK places terminal labels beside the port it routed from, but the clipping
+ * and straightening passes can slide the endpoint along the node's side after
+ * that. Move each label with its endpoint so it stays beside the end it names.
+ */
+export declare function followMovedEndpoints(edge: Edge, ports: {
+    start: P;
+    end: P;
+}): void;
 export declare function sanitizeElkEdgePoints(points: P[], startNode: NodeWithVertex, endNode: NodeWithVertex, log: ElkLayoutContext['log']): P[];
 /**
  * Mirror of `ensureEndMarkerSegmentLength` for the start of the path: the

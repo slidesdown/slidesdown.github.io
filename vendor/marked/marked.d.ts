@@ -208,14 +208,15 @@ declare class _Renderer<ParserOutput = string, RendererOutput = string> {
  * returns only the textual part of the token
  */
 declare class _TextRenderer<RendererOutput = string> {
-	strong({ text }: Tokens.Strong): RendererOutput;
-	em({ text }: Tokens.Em): RendererOutput;
+	parser: _Parser<unknown, RendererOutput>;
+	strong({ text, tokens }: Tokens.Strong): RendererOutput;
+	em({ text, tokens }: Tokens.Em): RendererOutput;
 	codespan({ text }: Tokens.Codespan): RendererOutput;
-	del({ text }: Tokens.Del): RendererOutput;
+	del({ text, tokens }: Tokens.Del): RendererOutput;
 	html({ text }: Tokens.HTML | Tokens.Tag): RendererOutput;
 	text({ text }: Tokens.Text | Tokens.Escape | Tokens.Tag): RendererOutput;
-	link({ text }: Tokens.Link): RendererOutput;
-	image({ text }: Tokens.Image): RendererOutput;
+	link({ text, tokens }: Tokens.Link): RendererOutput;
+	image({ text, tokens }: Tokens.Image): RendererOutput;
 	br(): RendererOutput;
 	checkbox({ raw }: Tokens.Checkbox): RendererOutput;
 }
@@ -256,12 +257,14 @@ declare const other: {
 	nonSpaceChar: RegExp;
 	newLineCharGlobal: RegExp;
 	tabCharGlobal: RegExp;
+	leadingSpaceTab: RegExp;
 	multipleSpaceGlobal: RegExp;
 	blankLine: RegExp;
 	doubleBlankLine: RegExp;
 	blockquoteStart: RegExp;
 	blockquoteSetextReplace: RegExp;
 	blockquoteSetextReplace2: RegExp;
+	blockquoteMarkerWhitespace: RegExp;
 	listReplaceNesting: RegExp;
 	listIsTask: RegExp;
 	listReplaceTask: RegExp;
@@ -282,6 +285,8 @@ declare const other: {
 	endAngleBracket: RegExp;
 	pedanticHrefTitle: RegExp;
 	unicodeAlphaNumeric: RegExp;
+	numericCharacterReference: RegExp;
+	numericCharacterReferenceOrAmpersand: RegExp;
 	escapeTest: RegExp;
 	escapeReplace: RegExp;
 	escapeTestNoEncode: RegExp;
@@ -300,6 +305,7 @@ declare const other: {
 	hrRegex: (indent: number) => RegExp;
 	fencesBeginRegex: (indent: number) => RegExp;
 	headingBeginRegex: (indent: number) => RegExp;
+	pedanticHeadingBeginRegex: (indent: number) => RegExp;
 	htmlBeginRegex: (indent: number) => RegExp;
 	blockquoteBeginRegex: (indent: number) => RegExp;
 };
@@ -322,6 +328,7 @@ export type BlockKeys = keyof typeof blockNormal;
 declare const inlineNormal: {
 	_backpedal: RegExp;
 	anyPunctuation: RegExp;
+	anyPunctuationOutsideCode: RegExp;
 	autolink: RegExp;
 	blockSkip: RegExp;
 	br: RegExp;
@@ -483,7 +490,7 @@ export interface MarkedExtension<ParserOutput = string, RendererOutput = string>
 	 */
 	renderer?: RendererObject<ParserOutput, RendererOutput> | null;
 	/**
-	 * Shows an HTML error message when rendering fails.
+	 * If true, errors caught by `marked.parse` / `marked.parseInline` are returned as an HTML error message instead of being thrown. Problems the lexer or parser recover from (an unknown token type, the infinite-loop guard) are logged with `console.error` instead of thrown.
 	 */
 	silent?: boolean;
 	/**
@@ -537,6 +544,7 @@ export interface MarkedOptions<ParserOutput = string, RendererOutput = string> e
  * Block Lexer
  */
 declare class _Lexer<ParserOutput = string, RendererOutput = string> {
+	#private;
 	tokens: TokensList;
 	options: MarkedOptions<ParserOutput, RendererOutput>;
 	state: {
@@ -544,6 +552,12 @@ declare class _Lexer<ParserOutput = string, RendererOutput = string> {
 		inRawBlock: boolean;
 		/** a link was produced in the inline run currently being scanned */
 		linkEmitted: boolean;
+		/**
+		 * false while scanning an inline run whose source contains no ')',
+		 * letting Tokenizer.link bail out before its quadratic backtracking.
+		 * Anchored once per run by inlineTokens.
+		 */
+		linkParenPossible: boolean;
 		top: boolean;
 	};
 	inlineQueue: {
@@ -579,6 +593,7 @@ declare class _Lexer<ParserOutput = string, RendererOutput = string> {
 			normal: {
 				_backpedal: RegExp;
 				anyPunctuation: RegExp;
+				anyPunctuationOutsideCode: RegExp;
 				autolink: RegExp;
 				blockSkip: RegExp;
 				br: RegExp;
@@ -599,9 +614,9 @@ declare class _Lexer<ParserOutput = string, RendererOutput = string> {
 				text: RegExp;
 				url: RegExp;
 			};
-			gfm: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
-			breaks: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
-			pedantic: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
+			gfm: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "anyPunctuationOutsideCode" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
+			breaks: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "anyPunctuationOutsideCode" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
+			pedantic: Record<"link" | "code" | "url" | "br" | "del" | "text" | "tag" | "escape" | "autolink" | "reflink" | "nolink" | "_backpedal" | "anyPunctuation" | "anyPunctuationOutsideCode" | "blockSkip" | "delLDelim" | "delRDelim" | "emStrongLDelim" | "emStrongRDelimAst" | "emStrongRDelimUnd" | "punctuation" | "reflinkSearch", RegExp>;
 		};
 	};
 	/**

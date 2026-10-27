@@ -7,6 +7,7 @@ export declare class PacketDB implements DiagramDB {
         bitWidth: number;
         bitsPerRow: number;
         showBits: boolean;
+        bitOrder: "ascending" | "descending";
         paddingX: number;
         paddingY: number;
         useWidth: number;
